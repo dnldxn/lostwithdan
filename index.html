@@ -9,8 +9,14 @@ title: Home
   var map;
   function initMap() {
     map = new google.maps.Map(document.getElementById('googleMap'), {
-      center: {lat: 39.5306718, lng: -76.8278028},
-      zoom: 6
+    	center: {lat: 39.5306718, lng: -76.8278028},
+      	zoom: 6,
+      	mapTypeControl: true,
+    		mapTypeControlOptions: {
+        	style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+        	position: google.maps.ControlPosition.TOP_RIGHT
+    	},
+      	streetViewControl: false
     });
     
     // Load coordinates from CSV file and convert to JSON structure
