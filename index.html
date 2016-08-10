@@ -3,7 +3,8 @@ layout: default
 title: Home
 ---
 
-<div id="googleMap"></div>
+<div id="googleMap" style="width:100%; height:650px"></div>
+
 <script>
   var map;
   function initMap() {
@@ -15,21 +16,21 @@ title: Home
     // Load coordinates from CSV file and convert to JSON structure
     var coordinates = {{ site.data.trail-coordinates | jsonify }};
     
-		for (var i = 0; i < coordinates.length; i++ ) {
-			var position = new google.maps.LatLng(coordinates[i].lat, coordinates[i].lng);
-			//bounds.extend(position);
-			marker = new google.maps.Marker({
-				position: position,
-				map: map,
-				title: coordinates[i].title
-			});
-			// Automatically center the map fitting all markers on the screen
-			// map.fitBounds(bounds);
-		}
+	for (var i = 0; i < coordinates.length; i++ ) {
+		var position = new google.maps.LatLng(coordinates[i].lat, coordinates[i].lng);
+		//bounds.extend(position);
+		marker = new google.maps.Marker({
+			position: position,
+			map: map,
+			title: coordinates[i].title
+		});
+		// Automatically center the map fitting all markers on the screen
+		// map.fitBounds(bounds);
+	}
   }
   
-  google.maps.event.addDomListener(window, 'load', initializeMap);
+  //google.maps.event.addDomListener(window, 'load', initializeMap);
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI&callback=initMap">
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI&callback=initMap">
 </script>
