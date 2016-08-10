@@ -11,6 +11,21 @@ title: Home
       center: {lat: 39.5306718, lng: -76.8278028},
       zoom: 6
     });
+    
+    var flightPlanCoordinates = [
+      {lat: 34.626703, lng: -84.193879},
+      {lat: 34.637552, lng: -84.195940},
+      {lat: 35.178953, lng: -83.562358},
+      {lat: 35.892984, lng: -82.826876}
+    ];
+    var trailPath = new google.maps.Polyline({
+      path: flightPlanCoordinates,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+    trailPath.setMap(map);
   }
 </script>
 <script async defer
