@@ -8,9 +8,10 @@ title: Home
 <script>
 var map;
 function initMap() {
+
+    var bounds = new google.maps.LatLngBounds()
+
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: {lat: 40.2, lng: -76.8278028},
-        zoom: 6,
         mapTypeControl: true,
             mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -25,28 +26,28 @@ function initMap() {
 
     for (var i = 0; i < coordinates.length; i++ ) {
         var position = new google.maps.LatLng(coordinates[i].lat, coordinates[i].lng);
-        //bounds.extend(position);
+        bounds.extend(position);
         marker = new google.maps.Marker({
             position: position,
             map: map,
             title: coordinates[i].description
         });
 
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+
         latLngArray.push(position)
     }
 
+    // Draw a line over all of the points
     var trailPath = new google.maps.Polyline({
-      path: latLngArray,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.6,
-      strokeWeight: 4
+        path: latLngArray,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.6,
+        strokeWeight: 6
     });
     trailPath.setMap(map);
-
-        // Automatically center the map fitting all markers on the screen
-        // map.fitBounds(bounds);
-
 }
   
   //google.maps.event.addDomListener(window, 'load', initializeMap);
