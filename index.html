@@ -1,15 +1,15 @@
 ---
-layout: default
+layout: home
 title: Home
 ---
 
-<div id="googleMap" style="width:140%; height:800px"></div>
+<div id="googleMap" style="height:800px; margin:1.5rem;"></div>
 
 <script>
 var map;
 function initMap() {
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: {lat: 39.5306718, lng: -76.8278028},
+        center: {lat: 40.2, lng: -76.8278028},
         zoom: 6,
         mapTypeControl: true,
             mapTypeControlOptions: {
@@ -39,8 +39,8 @@ function initMap() {
       path: latLngArray,
       geodesic: true,
       strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2
+      strokeOpacity: 0.6,
+      strokeWeight: 4
     });
     trailPath.setMap(map);
 
