@@ -1,19 +1,17 @@
-# Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
-relative_permalinks: true
-
 # Setup
-title:               'App Trail'
-tagline:             'A Jekyll theme'
-description:         'A reserved Jekyll theme that places the utmost gravity on content with a hidden drawer.</a>.'
-paginate:            5
+title:              'App Trail'
+tagline:            'Getting lost in the woods with friends!'
+description:        'A reserved Jekyll theme that places the utmost gravity on content with a hidden drawer.</a>.'
+#theme:              ''
+#paginate:            5
 
 # About/contact
 author:
   name:              Daniel Dixon
-  email:             @gmail.com
+  email:             'dnldxn@gmail.com'
 
 # Custom vars
 version:             0.0.1
+
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
