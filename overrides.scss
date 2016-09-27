@@ -7,8 +7,18 @@
   margin-bottom: 0px;
 }
 
-/*div.container.content {
-    padding-left: 0rem;
-    padding-right: 0rem;
-    margin: 0 auto;
-}*/
+table {
+  width: 80%;
+}
+
+table, tr, td {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-align: left;
+}

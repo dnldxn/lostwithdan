@@ -1,13 +1,23 @@
 ---
 layout: default
 title: Home
-custom_css: 
+custom_css:
     - overrides
 ---
 
 <div id="googleMap" style="height:800px;"></div>
 
-<div id="stats"></div>
+<div id="statsContainer" style="display:flex; justify-content:space-between; height:150px; font-family: Muli; margin-top: 20px">
+    <div style="flex-grow:1; flex-basis:250px; height: 90%;">
+        <table>
+            <tr><td>Distance Walked</td><td>500 miles</td></tr>
+            <tr><td>Distance Remaining</td><td>500 more</td></tr>
+            <tr><td>Current Location</td><td>At your door</td></tr>
+        </table>
+    </div>
+    <div id="paceChart" style="flex-grow:1; flex-basis:250px; height: 90%; text-align:center;">Pace</div>
+    <div style="flex-grow:1; flex-basis:250px; height: 90%; text-align:center">Estimated Completion: September 30</div>
+</div>
 
 <script>
     var map;
@@ -33,15 +43,15 @@ custom_css:
             var c = coordinates[i]
             
             if( ["FEATURE","SHELTER"].indexOf(c.type) > -1 && c.lat && c.lon ) {
-                console.log(i + ", " + c.type + ", " + c.name + ", " + c.lat + ", " + c.lon)
+                //console.log(i + ", " + c.type + ", " + c.name + ", " + c.lat + ", " + c.lon)
 
                 var position = new google.maps.LatLng(c.lat, c.lon);
                 bounds.extend(position);
-                // marker = new google.maps.Marker({
-                //     position: position,
-                //     map: map,
-                //     title: c.name
-                // });
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: c.name
+                });
 
                 // Automatically center the map fitting all markers on the screen
                 map.fitBounds(bounds);
@@ -59,6 +69,48 @@ custom_css:
             strokeWeight: 6
         });
         trailPath.setMap(map);
+    }
+</script>
+
+<script async defer type="text/javascript">
+    // Load chart packages and set callback function to run when the Visualization API is loaded
+    google.charts.load('current', {'packages':['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it.
+    function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'Miles');
+        data.addRows([ 
+            [new Date(2017,3,8), 7],
+            [new Date(2017,3,9), 10],
+            [new Date(2017,3,10), 12],
+            [new Date(2017,3,11), 11],
+            [new Date(2017,3,12), 14],
+            [new Date(2017,3,13), 15],
+            [new Date(2017,3,14), 9],
+            [new Date(2017,3,15), 8],
+            [new Date(2017,3,16), 14],
+            [new Date(2017,3,17), 13],
+            [new Date(2017,3,18), 16] 
+        ]);
+
+        // Set chart options
+        var options = {
+            title: 'Pace',
+            legend: { position: 'none' },
+            vAxis: {
+                gridlines: {
+                    color: 'transparent'
+                }
+            }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.charts.Line(document.getElementById('paceChart'));
+        chart.draw(data, options);
     }
 </script>
 
