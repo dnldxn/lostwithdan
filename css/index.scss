@@ -1,0 +1,54 @@
+---
+# Use a comment to ensure Jekyll reads the file to be transformed into CSS later
+# only main files contain this front matter, not partials.
+---
+
+@import 'https://fonts.googleapis.com/css?family=Muli';
+
+.masthead {
+  margin-bottom: 0px;
+}
+
+/*
+ * Stats Box
+ *
+ * Styles for the stats box below the map
+ */
+
+table {
+  width: 80%;
+}
+
+table, tr, td {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-align: left;
+}
+
+tbody tr:nth-child(odd) td {
+  background-color: initial;
+}
+
+#statsContainer {
+  /*border: 3px solid lightcoral;*/
+  display: flex; 
+  justify-content: space-between; 
+  height: 150px; 
+  font-family: Muli; 
+  margin-top: 20px;
+}
+
+.statsBox {
+  /*background: DeepSkyBlue;*/
+  margin: 5px;
+  flex-grow: 1;
+  flex-basis: 250px;
+  height: 90%;
+  text-align:center;
+}

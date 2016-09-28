@@ -1,0 +1,39 @@
+// Load chart packages and set callback function to run when the Visualization API is loaded
+google.charts.load('current', {'packages':['corechart', 'line']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it.
+function drawChart() {
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Miles');
+    data.addRows([ 
+        [new Date(2017,3,8), 7],
+        [new Date(2017,3,9), 10],
+        [new Date(2017,3,10), 12],
+        [new Date(2017,3,11), 11],
+        [new Date(2017,3,12), 14],
+        [new Date(2017,3,13), 15],
+        [new Date(2017,3,14), 9],
+        [new Date(2017,3,15), 8],
+        [new Date(2017,3,16), 14],
+        [new Date(2017,3,17), 13],
+        [new Date(2017,3,18), 16] 
+    ]);
+
+    // Set chart options
+    var options = {
+        title: 'Pace',
+        legend: { position: 'none' },
+        vAxis: {
+            gridlines: {
+                color: 'transparent'
+            }
+        }
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.charts.Line(document.getElementById('paceChart'));
+    chart.draw(data, options);
+}
