@@ -9,6 +9,19 @@
   margin-bottom: 0px;
 }
 
+html, body, .wrap {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px
+}
+
+#googleMap {
+  position: relative;
+  height: 80%;
+  margin: 5px;
+}
+
 /*
  * Stats Box
  *
@@ -29,6 +42,7 @@ table, tr, td {
   vertical-align: baseline;
   background: transparent;
   text-align: left;
+  white-space: nowrap;
 }
 
 tbody tr:nth-child(odd) td {
@@ -37,9 +51,9 @@ tbody tr:nth-child(odd) td {
 
 #statsContainer {
   /*border: 3px solid lightcoral;*/
-  display: flex; 
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between; 
-  height: 150px; 
   font-family: Muli; 
   margin-top: 20px;
 }
@@ -49,6 +63,6 @@ tbody tr:nth-child(odd) td {
   margin: 5px;
   flex-grow: 1;
   flex-basis: 250px;
-  height: 90%;
+  height: 125px;
   text-align:center;
 }

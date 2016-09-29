@@ -6,7 +6,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
     // Create the data table.
     var data = new google.visualization.DataTable();
-    data.addColumn('date', 'Date');
+    data.addColumn('date', '');
     data.addColumn('number', 'Miles');
     data.addRows([ 
         [new Date(2017,3,8), 7],
@@ -19,13 +19,20 @@ function drawChart() {
         [new Date(2017,3,15), 8],
         [new Date(2017,3,16), 14],
         [new Date(2017,3,17), 13],
-        [new Date(2017,3,18), 16] 
+        [new Date(2017,3,18), 16],
+        [new Date(2017,3,19), 15],
+        [new Date(2017,3,20), 9],
+        [new Date(2017,3,21), 8],
+        [new Date(2017,3,22), 14],
+        [new Date(2017,3,23), 13],
+        [new Date(2017,3,24), 16]
     ]);
 
     // Set chart options
     var options = {
         title: 'Pace',
         legend: { position: 'none' },
+        lineWidth: 0,
         vAxis: {
             gridlines: {
                 color: 'transparent'
