@@ -2,9 +2,11 @@ var map;
 
 function initMap() {
 
+    var bounds = new google.maps.LatLngBounds();
+
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: {lat: 40.2, lng: -78.1093641},
-        zoom: 6,
+        // center: {lat: 40.2, lng: -78.1093641},
+        // zoom: 6,
         mapTypeControl: true,
             mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -39,6 +41,7 @@ function initMap() {
             //console.log(i + ", " + c.type + ", " + c.name + ", " + c.lat + ", " + c.lon)
 
             var position = new google.maps.LatLng(c.lat, c.lon);
+            bounds.extend(position);
             marker = new google.maps.Marker({
                 position: position,
                 map: map,
@@ -46,6 +49,9 @@ function initMap() {
                 title: c.name //,
                 //animation: google.maps.Animation.DROP
             });
+
+            // Automatically center the map fitting all markers on the screen
+            map.fitBounds(bounds);
 
             latLngArray.push(position);
 

@@ -1,5 +1,5 @@
 // Load chart packages and set callback function to run when the Visualization API is loaded
-google.charts.load('current', {'packages':['corechart', 'line']});
+google.charts.load('current', {'packages':['line']});
 google.charts.setOnLoadCallback(drawChart);
 
 // Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it.
@@ -30,8 +30,11 @@ function drawChart() {
 
     // Set chart options
     var options = {
-        title: 'Pace',
+        chart: {
+            title: 'Pace'
+        },
         legend: { position: 'none' },
+        theme: 'maximized',
         lineWidth: 0,
         vAxis: {
             gridlines: {
