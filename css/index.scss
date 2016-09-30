@@ -45,6 +45,11 @@ table, tr, td {
   white-space: nowrap;
 }
 
+td {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 tbody tr:nth-child(odd) td {
   background-color: initial;
 }
@@ -53,7 +58,7 @@ tbody tr:nth-child(odd) td {
   /*border: 3px solid lightcoral;*/
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; 
+  justify-content: space-around; 
   font-family: Muli;
 }
 
@@ -64,4 +69,5 @@ tbody tr:nth-child(odd) td {
   flex-grow: 1;
   flex-basis: 250px;
   height: 100px;
+  max-width: 600px;
 }

@@ -50,9 +50,6 @@ function initMap() {
                 //animation: google.maps.Animation.DROP
             });
 
-            // Automatically center the map fitting all markers on the screen
-            map.fitBounds(bounds);
-
             latLngArray.push(position);
 
             // if(c.dt_reached && !coordinates[i+1].dt_reached) {
@@ -66,6 +63,9 @@ function initMap() {
             // }
         }
     }
+
+    // Automatically center the map fitting all markers on the screen
+    map.fitBounds(bounds);
 
     // Draw a line over all of the points
     var trailPath = new google.maps.Polyline({

@@ -1,5 +1,5 @@
 // Load chart packages and set callback function to run when the Visualization API is loaded
-google.charts.load('current', {'packages':['line']});
+google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 // Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it.
@@ -33,9 +33,16 @@ function drawChart() {
         chart: {
             title: 'Pace'
         },
+        hAxis: {
+            format: 'MMM d',
+            gridlines: {
+                color: 'transparent'
+            },
+            textPosition: 'in'
+        },
+        interpolateNulls: true,
         legend: { position: 'none' },
-        theme: 'maximized',
-        lineWidth: 0,
+        lineWidth: 4,
         vAxis: {
             gridlines: {
                 color: 'transparent'
@@ -44,6 +51,6 @@ function drawChart() {
     };
 
     // Instantiate and draw our chart, passing in some options.
-    var chart = new google.charts.Line(document.getElementById('paceChart'));
+    var chart = new google.visualization.LineChart(document.getElementById('paceChart'));
     chart.draw(data, options);
 }
