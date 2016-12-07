@@ -6,12 +6,14 @@ build-stats:
   - python _build/build.py
   artifacts:
     paths:
-    - _data/
+    - _data/nn_out.csv
 
 pages:
   stage: deploy
   image: ruby:2.3
   script:
+  - ls -l
+  - ls -l _data/
   - gem install jekyll
   - jekyll build -d public
   artifacts:
