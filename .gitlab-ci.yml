@@ -1,7 +1,16 @@
-image: ruby:2.3
+build-stats:
+  stage: build
+  image: python:3.3
+  script:
+  - pip install -r _build/requirements.txt
+  - python _build/build.py
+  artifacts:
+    paths:
+    - _data/
 
 pages:
   stage: deploy
+  image: ruby:2.3
   script:
   - gem install jekyll
   - jekyll build -d public
@@ -10,3 +19,5 @@ pages:
     - public
   only:
   - master
+  dependencies:
+  - build-stats
