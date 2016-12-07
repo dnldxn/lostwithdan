@@ -1,6 +1,6 @@
 build-stats:
   stage: build
-  image: python:3.3
+  image: python:3.5
   script:
   - pip install -r _build/requirements.txt
   - python _build/build.py
