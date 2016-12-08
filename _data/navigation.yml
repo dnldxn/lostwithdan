@@ -1,7 +1,13 @@
 main:
   - title: "Home"
     url: /
+  - title: "Pictures"
+    url: /pictures/
   - title: "Posts"
+    url: /blog/
+  - title: "Interactive Map"
+    url: /map/
+  - title: "Send Me a Package!"
     url: /blog/
   - title: "External Link"
     url: https://google.com
