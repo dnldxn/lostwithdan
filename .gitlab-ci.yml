@@ -12,9 +12,7 @@ pages:
   stage: deploy
   image: ruby:2.3
   script:
-  - ls -l
-  - ls -l _data/
-  - gem install jekyll
+  - bundle install
   - jekyll build -d public
   artifacts:
     paths:

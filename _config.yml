@@ -1,9 +1,12 @@
-# Setup
+# Site Settings
+locale:             'en'
 title:              'App Trail'
 tagline:            'Getting lost in the woods with friends!'
 description:        'Getting lost in the woods with friends!'
-#theme:              ''
-#paginate:            5
+theme:              minimal-mistakes-jekyll
+exclude:
+  - Gemfile
+  - Gemfile.lock
 
 # About/contact
 author:
@@ -11,7 +14,14 @@ author:
   email:             'dnldxn@gmail.com'
 
 # Custom vars
-version:             0.0.6
+version:             0.0.7
 
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
+# Outputting
+permalink:          pretty
+paginate:           5  # amount of posts to show
+timezone:           'America/Los_Angeles'    # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed

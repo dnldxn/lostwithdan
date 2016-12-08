@@ -1,0 +1,7 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "Posts"
+    url: /blog/
+  - title: "External Link"
+    url: https://google.com
