@@ -1,17 +1,15 @@
 ---
-layout: single
+permalink: /map/
+layout: splash
+custom_css: google_map
 ---
 
 <div id="googleMap"></div>
 
 <script type="text/javascript">
-    {% include js/google_map.js %}
+    {% include /js/google_map.js %}
 </script>
 
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI&callback=initMap">
-</script>
-
-<script type="text/javascript">
-    {% include js/google_charts.js %}
 </script>

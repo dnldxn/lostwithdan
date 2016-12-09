@@ -12,9 +12,8 @@ pages:
   stage: deploy
   image: ruby:2.3
   script:
-  - gem install jekyll
-  - gem install jekyll-paginate
-  - gem install minimal-mistakes-jekyll
+  - gem install bundler
+  - bundle install
   - jekyll build -d public
   artifacts:
     paths:

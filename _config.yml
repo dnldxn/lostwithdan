@@ -4,14 +4,19 @@ title:              'App Trail'
 tagline:            'Getting lost in the woods with friends!'
 description:        'Getting lost in the woods with friends!'
 theme:              minimal-mistakes-jekyll
+include:            
+  - "_pages"
+  - "assets"
 exclude:
   - Gemfile
   - Gemfile.lock
 
+url: http://192.168.99.100:4000
+
 # About/contact
 author:
-  name:              Daniel Dixon
-  email:             'dnldxn@gmail.com'
+  name:             Daniel Dixon
+  email:            'dnldxn@gmail.com'
 
 # Custom vars
 version:             0.0.7
@@ -21,7 +26,37 @@ permalink:          pretty
 paginate:           5  # amount of posts to show
 timezone:           'America/Los_Angeles'    # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+# Enable Plugins
+gems:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+
 # Sass/SCSS
 sass:
-  sass_dir: _sass
-  style: compressed
+  sass_dir:         _sass
+  style:            compressed
+
+# HTML Compression
+# - http://jch.penibelst.de/
+# compress_html:
+#   clippings: all
+#   ignore:
+#     envs: development
+
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: # true
+      share: true
+      related: true

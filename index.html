@@ -1,8 +1,10 @@
 ---
+permalink: /
 layout: splash
-author_profile: true
+custom_css: stats
 header:
-  image: https://maps.googleapis.com/maps/api/staticmap?center=39.888,-77.955&zoom=5&size=500x340&maptype=roadmap&scale=2&key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI
+    image: https://maps.googleapis.com/maps/api/staticmap?path=weight:2|34.62673,-84.193656|36.1042581,-82.3968395|39.3254,-77.7393|43.8739725,-72.0290049|45.904362,-68.921392&zoom=5&size=640x350&maptype=roadmap&scale=2&key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI
+    link: /map/
 ---
 
 <div id="statsContainer">
@@ -18,11 +20,11 @@ header:
         <table>
             <tr><td>Date Started</td><td>March 8</td></tr>
             <tr><td>Estimated Completion</td><td>September 15</td></tr>
-            <tr><td>Days since Start</td><td>30</td></tr>
+            <tr><td>Days since Start</td><td>15</td></tr>
         </table>
     </div>
 </div>
 
 <script type="text/javascript">
-    {% include js/google_charts.js %}
+    {% include /js/google_charts.js %}
 </script>
