@@ -4,6 +4,7 @@ build-stats:
   script:
   - pip install -r _build/requirements.txt
   - python _build/build.py
+  - python _build/generate_map_img.py
   artifacts:
     paths:
     - _data/nn_out.csv

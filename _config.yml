@@ -11,13 +11,15 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
+# url: http://192.168.99.100:4000
+
 # About/contact
 author:
   name:             Daniel Dixon
   email:            'dnldxn@gmail.com'
 
 # Custom vars
-version:             0.0.7
+version:             0.0.8
 
 # Outputting
 permalink:          pretty
@@ -36,14 +38,6 @@ gems:
 sass:
   sass_dir:         _sass
   style:            compressed
-
-# HTML Compression
-# - http://jch.penibelst.de/
-# compress_html:
-#   clippings: all
-#   ignore:
-#     envs: development
-
 
 # Defaults
 defaults:

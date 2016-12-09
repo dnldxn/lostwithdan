@@ -6,6 +6,11 @@
 @import 'https://fonts.googleapis.com/css?family=Muli';
 
 
+.page__hero-image {
+  width: 100%;
+  height: 28em;
+}
+
 
 /*
  * Stats Box
@@ -49,10 +54,9 @@ tbody tr:nth-child(odd) td {
 
 .statsBox {
   /*background: DeepSkyBlue;*/
-  margin: 10px;
-  margin-top: 20px;
   flex-grow: 1;
   flex-basis: 250px;
-  height: 100px;
+  height: 120px;
   max-width: 600px;
+  line-height: 2.0;
 }
