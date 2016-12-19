@@ -3,10 +3,10 @@
 * ~~Add AT path to splash image~~
 * ~~Make spash image clickable~~
 * ~~Reenable dynamic map page~~
-* Prototype stats and charts on homepage
+* ~~Prototype stats and charts on homepage~~
 * ~~Squish static map image verically~~
-* Crop Google logo on static map
-* Add current location to static map
+* ~~Crop Google logo on static map~~
+* ~~Add current location to static map~~
 * Add current location to dynamic map
 * ~~Have Python build the static Google Maps image as a build step~~
 * 100% width and height for dynamic google map

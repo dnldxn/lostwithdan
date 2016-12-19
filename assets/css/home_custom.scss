@@ -6,9 +6,20 @@
 @import 'https://fonts.googleapis.com/css?family=Muli';
 
 
+/*
+* Static Google Map Image
+* 
+* 
+*/
+.page__hero {
+  overflow: hidden;
+
+}
+
 .page__hero-image {
-  width: 100%;
-  height: 28em;
+  height: 30em;
+  margin-top: -20px;  /* Crop extra space on top */
+  margin-bottom: -35px;  /* Crop Google Maps logo from bottom */
 }
 
 
