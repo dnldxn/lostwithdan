@@ -3,8 +3,8 @@ import pandas as pd
 import json
 
 # define input and output file locations
-fileInPath = '../_data/atdb.092116023143.ALL.csv'
-fileOutPath = '../_data/stats.json'
+fileInPath = os.path.join(os.path.dirname(__file__), '../_data/atdb.092116023143.ALL.csv')
+fileOutPath = os.path.join(os.path.dirname(__file__), '../_data/stats.json')
 
 # column names
 dtCol = 'dt_reached'
