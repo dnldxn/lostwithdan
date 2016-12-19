@@ -7,7 +7,8 @@ build-stats:
   - python _build/generate_map_img.py
   artifacts:
     paths:
-    - _data/nn_out.csv
+    - _data/stats.json
+    - img/googlemap.png
 
 pages:
   stage: deploy
