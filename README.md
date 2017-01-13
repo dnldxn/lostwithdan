@@ -11,8 +11,9 @@
 * ~~Have Python build the static Google Maps image as a build step~~
 * 100% width and height for dynamic google map
 * Add logo
-* "Send me a Package" instructions
+* ~~"Send me a Package" instructions~~
 * Dynamically build stats in Python
+* Finance section in stats
 * Tie pictures with Google Photos album
 * NN for estimating completion date
 * Writeup about the NN estimation (how is this determined?)
@@ -27,7 +28,8 @@
 * ~~Posts page has wrong navigation~~
 * ~~Google chart not showing~~
 * Pace chart bars are tiny when there are many data points
-* Weird sporadic cropping issue with static map
+* ~~Weird sporadic cropping issue with static map~~
+* Static image crops only from right when page gets smaller.  It should crop from both sides.
 
 
 # Resources

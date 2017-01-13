@@ -13,13 +13,16 @@
 */
 .page__hero {
   overflow: hidden;
-
+  height: 50%;
+  width: 100%;
 }
 
 .page__hero-image {
-  height: 30em;
   margin-top: -20px;  /* Crop extra space on top */
   margin-bottom: -35px;  /* Crop Google Maps logo from bottom */
+  min-width: 600px;
+  max-height: 1200px;
+  max-width: 2000px;
 }
 
 
