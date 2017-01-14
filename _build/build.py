@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import json
+# import keras
 
 # define input and output file locations
 fileInPath = os.path.join(os.path.dirname(__file__), '../_data/atdb.092116023143.ALL.csv')
@@ -8,17 +9,23 @@ fileOutPath = os.path.join(os.path.dirname(__file__), '../_data/stats.json')
 
 # column names
 dtCol = 'dt_reached'
+estimated_start_dt = '2017-03-09'
 
 
-def get_current_location(df):
+def current_location(df):
     completed = df[df[dtCol].notnull()][['lat', 'lon', dtCol]]
-    completed[dtCol] = completed[dtCol].dt.strftime('%Y-%m-%d')
-    last_completed = completed.iloc[-1]
+
+    if len(completed) > 0:
+        completed[dtCol] = completed[dtCol].dt.strftime('%Y-%m-%d')
+        last_completed = completed.iloc[-1]
+    else:
+        last_completed = df.iloc[0]
+        last_completed.set_value(dtCol, estimated_start_dt)
 
     return {'current_location': last_completed.to_dict()}
 
 
-def get_miles_hiked_per_day(df):
+def miles_hiked_per_day(df):
     completed = df[df[dtCol].notnull()][[dtCol, 'to_spgr']]
     completed['dt'] = completed[dtCol].dt.strftime('%Y-%m-%d')
 
@@ -32,32 +39,23 @@ def get_miles_hiked_per_day(df):
     miles_per_day = group_day.agg(f)
     miles_per_day['miles'] = miles_per_day.to_spgr - miles_per_day.to_spgr_shifted
 
-    return {'miles_per_day': miles_per_day['miles'].to_dict()}
+    # TODO: Rounding issue with unit tests
+    return {'miles_per_day': miles_per_day.to_dict()}
 
 
-def get_estimated_completion(df):
+def estimated_completion(df):
     features = df[df['type'] == 'FEATURE']
 
     return {'estimated_completion': '2017-08-15'}
 
 
-df = pd.read_csv(fileInPath, index_col='id', parse_dates=[dtCol], infer_datetime_format=True)
-# print(df[:5])
-# print("\n\n")
+if __name__ == "__main__":
+    checkpoints = pd.read_csv(fileInPath, index_col='id', parse_dates=[dtCol], infer_datetime_format=True)
 
-# buffer to store output
-out = []
+    cl = current_location(checkpoints)
+    mpd = miles_hiked_per_day(checkpoints)
+    ec = estimated_completion(checkpoints)
 
-
-cl = get_current_location(df)
-mpd = get_miles_hiked_per_day(df)
-ec = get_estimated_completion(df)
-
-
-print("\n")
-print(json.dumps([cl, mpd, ec]))
-
-
-# write json file
-with open(fileOutPath, 'w') as outfile:
-    json.dump([cl, mpd, ec], outfile)
+    # write json file
+    with open(fileOutPath, 'w') as outfile:
+        json.dump([cl, mpd, ec], outfile)
