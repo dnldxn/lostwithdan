@@ -5,7 +5,9 @@ main:
     url: /blog/
   - title: "Map"
     url: /map/
+  - title: "Gear"
+    url: /gear/
   - title: "Send Me a Package!"
     url: /package/
-  - title: "External Link"
+  - title: "Contact"
     url: https://google.com

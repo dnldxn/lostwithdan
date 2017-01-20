@@ -1,0 +1,133 @@
+---
+permalink: /gear/
+layout: single
+title: Gear
+custom_css: gear
+---
+
+
+{% assign categories = site.data.gear | group_by: "category" %}
+
+<div class="summaryContainer">
+    <div class="summaryBox" id="weight_chart" style="width: 600px; height: 300px;">Summary</div>
+    <table class="summaryBox" id="summaryTable">
+        <thead>
+            <tr>
+                <th class="categorycolor">
+                </th>
+                <th class="categoryname">
+                    <h4>Category</h4>
+                </th>
+                <th class="categoryweight">
+                    <h4>Weight</h4>
+                </th>
+                <th class="categoryoz"></th>
+            </tr>
+        <thead>
+        <tbody>
+            {% assign weight_total = 0 %}
+            {% for category in categories %}
+                {% assign cat_weight_total = 0 %}
+
+                <!-- Add up the items in the category to a category total weight -->
+                {% for item in category.items %}
+                    {% assign w = item.weight | times: item.qty %}
+                    {% assign cat_weight_total = cat_weight_total | plus: w %}
+                {% endfor %}
+
+                <!-- Add the category weight to the total weight -->
+                {% assign weight_total = weight_total | plus: cat_weight_total %}
+
+                <tr>
+                    <td id="{{ category.name }}color">
+                        <!--Placeholder circle for legend color. Default is grey. The color will be filled in by JS once the Google Chart has finished loading. -->
+                        <svg height="20" width="20"><circle cx="10" cy="10" r="5.5" fill="grey"></circle></svg>
+                    </td>
+                    <td>
+                        {{ category.name }}
+                    </td>
+                    <td>
+                        {{ cat_weight_total }}
+                    </td>
+                    <td>
+                        oz
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><b>Total</b></td>
+                <td>{{ weight_total }}</td>
+                <td>oz</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% for category in categories %}
+    {% assign weight_total = 0 %}
+    {% assign qty_total = 0 %}
+    <table class="items">
+        <thead>
+            <tr>
+                <th class="itemname">
+                    <h3>{{ category.name }}</h3>
+                </th>
+                <th class="itembrand"></th>
+                <th class="itemweight">
+                    <h4>Weight</h4>
+                </th>
+                <th class="itemqty">
+                    <h4>Qty</h4>
+                </th>
+            </tr>
+        <thead>
+        <tbody>
+            {% for item in category.items %}
+                {% assign w = item.weight | times: item.qty %}
+                {% assign weight_total = weight_total | plus: w %}
+                {% assign qty_total = qty_total | plus: item.qty %}
+                <tr>
+                    <td>
+                        {{ item.name }}
+                    </td>
+                    <td>
+                        {% if item.url %}
+                            <a href="{{ item.url }}"> {{ item.brand }} </a>
+                        {% else %}
+                            {{ item.brand }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ item.weight }} oz
+                    </td>
+                    <td>
+                        {{ item.qty }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td />
+                <td />
+                <td>
+                    <b>{{ weight_total }} oz</b>
+                </td>
+                <td>
+                    <b>{{ qty_total }}</b>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+{% endfor %}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    {% include /js/gear_charts.js %}
+</script>

@@ -1,0 +1,93 @@
+---
+# Use a comment to ensure Jekyll reads the file to be transformed into CSS later
+# only main files contain this front matter, not partials.
+---
+
+
+// General Options that apply to all tables
+table {
+
+    border: none;
+
+    thead {
+        background-color: transparent;
+
+        th {
+            padding: 0px;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            border-bottom: 1px solid #444;
+        }
+    }
+
+    td {
+        padding: 0.3em;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+
+// Options that apply to the summary section
+.summaryContainer {
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    .summaryBox {
+        flex-grow: 1;
+        flex-basis: 250px;
+        height: 100px;
+        max-width: 600px;
+    }
+
+    table {
+        width: 40%;
+    }
+
+    #summaryTable td {
+        margin: 0px;
+        padding: 0px;
+    }
+}
+
+
+// Options that apply to the items tables section
+table.items {
+    width: 100%;
+
+    thead {
+
+        th.itemname {
+            width: 25%;
+        }
+
+        th.itembrand {
+            width: 55%;
+        }
+
+        th.itemweight {
+            width: 15%;
+        }
+
+        th.itemqty {
+            width: 5%;
+        }
+    }
+
+    tfoot {
+        td {
+            border-top: 1px solid #444;
+            border-bottom: none;
+        }
+    }
+
+
+    td {
+        border-top: 1px dotted #AAA;
+        border-bottom: none;
+    }
+}

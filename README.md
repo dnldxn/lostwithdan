@@ -1,4 +1,5 @@
 # TODO
+
 * ~~Size splash image correctly~~
 * ~~Add AT path to splash image~~
 * ~~Make spash image clickable~~
@@ -7,6 +8,8 @@
 * ~~Squish static map image verically~~
 * ~~Crop Google logo on static map~~
 * ~~Add current location to static map~~
+* Change icon for current location on static map
+* ~~Gear section~~
 * Add current location to dynamic map
 * ~~Have Python build the static Google Maps image as a build step~~
 * 100% width and height for dynamic google map
@@ -22,9 +25,11 @@
 * Tie domain name to gitlab project
 * Compress html
 * Contribute splash image clickable link back to Minimal Mistakes Github
+* Fill out rest of gear list
 
 
 # Bugs
+
 * ~~Posts page has wrong navigation~~
 * ~~Google chart not showing~~
 * Pace chart bars are tiny when there are many data points
@@ -33,5 +38,7 @@
 
 
 # Resources
+
 http://launchaco.com/build/
+
 https://www.logojoy.com/
