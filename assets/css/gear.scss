@@ -4,6 +4,12 @@
 ---
 
 
+// Weight Units Selection
+select#weightUnitSelector {
+    font-size: 0.7em;
+    float: right;
+}
+
 // General Options that apply to all tables
 table {
 
@@ -58,6 +64,7 @@ table {
 // Options that apply to the items tables section
 table.items {
     width: 100%;
+    margin-bottom: 0px;
 
     thead {
 

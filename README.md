@@ -10,6 +10,7 @@
 * ~~Add current location to static map~~
 * Change icon for current location on static map
 * ~~Gear section~~
+* ~~Gear weight unit selection (ounces and pounds)~~
 * Add current location to dynamic map
 * ~~Have Python build the static Google Maps image as a build step~~
 * 100% width and height for dynamic google map
@@ -25,7 +26,7 @@
 * Tie domain name to gitlab project
 * Compress html
 * Contribute splash image clickable link back to Minimal Mistakes Github
-* Fill out rest of gear list
+* ~~Fill out rest of gear list~~
 
 
 # Bugs
@@ -35,6 +36,7 @@
 * Pace chart bars are tiny when there are many data points
 * ~~Weird sporadic cropping issue with static map~~
 * Static image crops only from right when page gets smaller.  It should crop from both sides.
+* Static map image not centered on high resolution screens
 
 
 # Resources

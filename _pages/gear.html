@@ -8,6 +8,11 @@ custom_css: gear
 
 {% assign categories = site.data.gear | group_by: "category" %}
 
+<select id="weightUnitSelector" onchange="weightUnitChange()">
+  <option value="oz">Oz</option>
+  <option value="lbs">Lbs</option>
+</select>
+
 <div class="summaryContainer">
     <div class="summaryBox" id="weight_chart" style="width: 600px; height: 300px;">Summary</div>
     <table class="summaryBox" id="summaryTable">
@@ -46,10 +51,10 @@ custom_css: gear
                     <td>
                         {{ category.name }}
                     </td>
-                    <td>
+                    <td class="weightValue" data-weightoz="{{ cat_weight_total }}">
                         {{ cat_weight_total }}
                     </td>
-                    <td>
+                    <td class="weightUnit">
                         oz
                     </td>
                 </tr>
@@ -59,8 +64,8 @@ custom_css: gear
             <tr>
                 <td></td>
                 <td><b>Total</b></td>
-                <td>{{ weight_total }}</td>
-                <td>oz</td>
+                <td class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total }}</td>
+                <td class="weightUnit">oz</td>
             </tr>
         </tfoot>
     </table>
@@ -101,7 +106,8 @@ custom_css: gear
                         {% endif %}
                     </td>
                     <td>
-                        {{ item.weight }} oz
+                        <span class="weightValue" data-weightoz="{{ item.weight }}">{{ item.weight }} </span>
+                        <span class="weightUnit">oz</span>
                     </td>
                     <td>
                         {{ item.qty }}
@@ -114,7 +120,8 @@ custom_css: gear
                 <td />
                 <td />
                 <td>
-                    <b>{{ weight_total }} oz</b>
+                    <b class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total }} </b>
+                    <b class="weightUnit">oz</b>
                 </td>
                 <td>
                     <b>{{ qty_total }}</b>
@@ -130,4 +137,29 @@ custom_css: gear
 
 <script type="text/javascript">
     {% include /js/gear_charts.js %}
+</script>
+
+<script type="text/javascript">
+    function weightUnitChange() {
+        // Get value of the weight unit selector
+        var weightUnitSelector = document.getElementById("weightUnitSelector");
+        var weightUnitVal = weightUnitSelector.options[weightUnitSelector.selectedIndex].value;
+
+        // Loop over the weight unit elements and change their units (lbs or oz)
+        var weightUnits = document.getElementsByClassName('weightUnit');
+
+        for(var i=0; i < weightUnits.length; i++) {
+            weightUnits[i].textContent = weightUnitVal;
+        }
+
+        // Loop over the weight value elements and change their values (lb = oz / 16)
+        var weightValues = document.getElementsByClassName('weightValue');
+
+        for(var i=0; i < weightValues.length; i++) {
+            var oz = parseFloat(weightValues[i].getAttribute('data-weightoz'));
+            
+            if(weightUnitVal == 'oz')       weightValues[i].textContent = oz;
+            else if(weightUnitVal == 'lbs')  weightValues[i].textContent = (oz / 16.0).toFixed(2);
+        }
+    }
 </script>
