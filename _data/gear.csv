@@ -1,50 +1,54 @@
-id,category,name,brand,weight,qty,url
-1,Shelter,Hammock,Hennessy Explorer Ultralight,34,1,https://hennessyhammock.com/products/explorer-ultralite-asym-classic
-2,Shelter,Hammock Rainfly,Hennessy Hex Symmetrical 70D Polyester,27,1,https://hennessyhammock.com/products/hex-rainfly-70d-polyester
-3,Shelter,Hammock Straps,Eno Atlas Straps,11,1,https://www.eaglesnestoutfittersinc.com/product/AST001.html
-4,Shelter,Carabeener,,1.3,2,
-5,Shelter,Hammock Stuff Sack,Hennessy Snakeskins,2,1,
-6,Shelter,Hammock Underquilt,JRB Nest,25.3,1,http://www.jacksrbetter.com/shop/the-nest/
-7,Shelter,Sleeping Bag,Kelty Cosmic Down 20-Degree,46.1,1,https://www.amazon.com/gp/product/B009PRNJUC
-8,Shelter,Sleeping Pad,Therm-a-Rest RidgeRest SOLite (small),9.4,1,https://www.amazon.com/gp/product/B004532GCI?th=1&psc=1
-9,Shelter,Tarp Stakes,Vargo Titanium Tent Stake,0.28,4,https://www.rei.com/product/709915/vargo-outdoor-titanium-stakes-6-pack
-10,Pack,Backpack,Deuter ACT Lite 65+10,62,1,http://www.deuter.com/US/us/trekking/act-lite-65plus10-4340115.html
-11,Pack,Dry Sack,Sea to Summit Ultra-Sil 8L,1.1,1,
-12,Pack,Dry Sack,Sea to Summit Ultra-Sil 4L,0.9,1,
-13,Clothing,Tee Shirt,,8,1,
-14,Clothing,Socks,Darn Tough,4,2,
-15,Clothing,Underwear,Exofficio Give-N-Go Sport Six-Inch,2.5,1,https://www.amazon.com/gp/product/B00MOBSSUC?th=1&psc=1
-16,Clothing,Gym shorts,,8.4,1,
-17,Clothing,Hiking Shoes,Merrell Moab Ventilator,24,1,https://www.amazon.com/gp/product/B000PAD2UU?th=1&psc=1
-18,Clothing,Down Jacket,,8.5,1,
-19,Clothing,Poncho,Frogg Toggs Ultra-Lite Poncho,7.97,1,https://www.amazon.com/gp/product/B007X5Z1S6
-20,Clothing,Hat,,3,1,
-21,Clothing,Beanie,,1.76,1,
-22,Clothing,Camp Slippers,,10.8,1,
-23,Kitchen,Pot,GSI Outdoors Haluite Boiler 1.1L,7.34,1,
-24,Kitchen,Stove,MSR Micro Rocket,2.6,1,https://www.amazon.com/gp/product/B00F0BSDO4
-25,Kitchen,Spoon,,0.67,1,
-26,Kitchen,Lighter,,0.74,2,
-27,Kitchen,Foldable Cup,,2.12,1,
-28,Kitchen,Multitool,Leatherman Squirt PS4 (Red),2,1,https://www.amazon.com/gp/product/B0032XZW82
-29,Electronics,Phone,Samsung Galaxy S6 Edge,4.7,1,
-30,Electronics,Phone Charger,,2.1,1,
-31,Electronics,Phone Case,SUPCASE Unicorn Beetle PRO,0.96,1,https://www.amazon.com/gp/product/B00UZJY54S
-32,Electronics,Battery Bank,Anker PowerCore 10000,6.4,1,https://www.amazon.com/gp/product/B0194WDVHI
-33,Electronics,Headlamp,Energizer Pro 7 LED Industrial,3.14,1,https://www.amazon.com/gp/product/B00P8TKYS6
-34,Electronics,Backup batteries,Triple A,0.41,3,
-35,Electronics,Emergency GPS,ACR PLB,5.04,1,
-36,Electronics,Wrist Watch,Casio SGW100-1V Twin Sensor Digital,2.4,1,https://www.amazon.com/gp/product/B00186YU4M
-37,Electronics,Kindle,,6.8,1,
-38,Sanitary,Cleansing/facial wipes,,4.3,1,
-39,Sanitary,Trowel,,3,1,
-40,Sanitary,TP,,1.2,1,
-41,Sanitary,Tooth Brush,,0.3,1,
-42,Sanitary,Tooth Paste,Small travel size,0.8,1,
-43,Sanitary,Travel Deo,,1.4,1,
-44,Misc,Paracord,50',3.1,1,
-45,Misc,Gallon Ziplocks,,,3,
-46,Misc,Water Treatment Kit,AquaMira,3.1,1,
-47,Misc,Cash,,,,
-48,Misc,Ductape,,,,
-49,Misc,Map/Guide,A.T. Guide Northbound,8,1,http://www.theatguide.com/
+id,category,name,brand,weight,qty,worn,url,comment
+1,Shelter,Hammock,Hennessy Explorer Ultralight,34,1,0,https://hennessyhammock.com/products/explorer-ultralite-asym-classic,
+2,Shelter,Hammock Rainfly,Hennessy Hex Symmetrical 70D Polyester,27,1,0,https://hennessyhammock.com/products/hex-rainfly-70d-polyester,
+3,Shelter,Hammock Straps,Eno Atlas Straps,11,1,0,https://www.eaglesnestoutfittersinc.com/product/AST001.html,
+4,Shelter,Carabeener,,1.3,2,0,,
+5,Shelter,Hammock Stuff Sack,Hennessy Snakeskins,2,1,0,,
+6,Shelter,Hammock Underquilt,JRB Nest,25.3,1,0,http://www.jacksrbetter.com/shop/the-nest/,
+7,Shelter,Sleeping Bag,Kelty Cosmic Down 20-Degree,46.1,1,0,https://www.amazon.com/gp/product/B009PRNJUC,
+8,Shelter,Sleeping Pad,Therm-a-Rest RidgeRest SOLite (small),9.4,1,0,https://www.amazon.com/gp/product/B004532GCI?th=1&psc=1,
+9,Shelter,Tarp Stakes,Vargo Titanium Tent Stake,0.28,4,0,https://www.rei.com/product/709915/vargo-outdoor-titanium-stakes-6-pack,
+10,Pack,Backpack,Zpacks Arc Haul,27.1,1,0,http://www.zpacks.com/backpacks/arc_haul.shtml,
+11,Pack,Dry Sack,Sea to Summit Ultra-Sil 8L,1.1,1,0,,
+12,Pack,Dry Sack,Sea to Summit Ultra-Sil 4L,0.9,1,0,,
+13,Clothing,Tee Shirt,,8,1,1,,
+14,Clothing,Socks,Darn Tough,4,2,1,,
+15,Clothing,Underwear,Exofficio Give-N-Go Sport Six-Inch,2.5,1,1,https://www.amazon.com/gp/product/B00MOBSSUC?th=1&psc=1,
+16,Clothing,Gym shorts,,8.4,1,1,,
+17,Clothing,Hiking Shoes,Merrell Moab Ventilator,24,1,1,https://www.amazon.com/gp/product/B000PAD2UU?th=1&psc=1,
+18,Clothing,Insulating Layer,Down Jacket,8.5,1,0,,
+19,Clothing,Rain Pants,Marmot PreCip Full Zip (Medium),11.5,1,0,,
+20,Clothing,Base Layer Pants,Long Merino Wool Underwear,5.6,1,0,,
+21,Clothing,Base Layer Shirt,Long Merino Wool Underwear,6.2,1,0,,
+22,Clothing,Poncho,Frogg Toggs Ultra-Lite Poncho,7.97,1,0,https://www.amazon.com/gp/product/B007X5Z1S6,
+23,Clothing,Hat,,3,1,1,,
+24,Clothing,Beanie,,1.76,1,0,,
+25,Clothing,Camp Slippers,,10.8,1,0,,
+26,Kitchen,Pot,GSI Outdoors Haluite Boiler 1.1L,7.34,1,0,,
+27,Kitchen,Stove,MSR Micro Rocket,2.6,1,0,https://www.amazon.com/gp/product/B00F0BSDO4,
+28,Kitchen,Spoon,Zpacks Titanium Short Spoon,0.28,1,0,http://www.zpacks.com/accessories/spoon.shtml,
+29,Kitchen,Lighter,,0.74,2,0,,
+30,Kitchen,Foldable Cup,,2.12,1,0,,
+31,Kitchen,Multitool,Leatherman Squirt PS4 (Red),2,1,0,https://www.amazon.com/gp/product/B0032XZW82,
+32,Kitchen,1L Empty Plastic Water Bottles,,1.2,2,,,
+33,Electronics,Phone,Samsung Galaxy S6 Edge,4.7,1,0,,
+34,Electronics,Phone Charger,,2.1,1,0,,
+35,Electronics,Phone Case,SUPCASE Unicorn Beetle PRO,0.96,1,0,https://www.amazon.com/gp/product/B00UZJY54S,
+36,Electronics,Battery Bank,Anker PowerCore 10000,6.4,1,0,https://www.amazon.com/gp/product/B0194WDVHI,
+37,Electronics,Headlamp,Energizer Pro 7 LED Industrial,3.14,1,0,https://www.amazon.com/gp/product/B00P8TKYS6,
+38,Electronics,Backup batteries,Triple A,0.41,3,0,,
+39,Electronics,Emergency GPS,ACR PLB,5.04,1,0,,
+40,Electronics,Wrist Watch,Casio SGW100-1V Twin Sensor Digital,2.4,1,0,https://www.amazon.com/gp/product/B00186YU4M,
+41,Electronics,Kindle,,6.8,1,0,,
+42,Sanitary,Cleansing/facial wipes,,4.3,1,0,,
+43,Sanitary,Trowel,,3,1,0,,
+44,Sanitary,TP,,1.2,1,0,,
+45,Sanitary,Tooth Brush,,0.3,1,0,,
+46,Sanitary,Tooth Paste,Small travel size,0.8,1,0,,
+47,Sanitary,Travel Deo,,1.4,1,0,,
+48,Misc,Paracord,50',3.1,1,0,,
+49,Misc,Gallon Ziplocks,,,3,0,,
+50,Misc,Water Treatment Kit,AquaMira,3.1,1,0,,
+51,Misc,Cash,,0.2,1,0,,Weighed 6 bills
+52,Misc,Ductape,,,,0,,
+53,Misc,Map/Guide,A.T. Guide Northbound,8,1,0,http://www.theatguide.com/,

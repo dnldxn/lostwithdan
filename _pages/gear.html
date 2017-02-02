@@ -158,8 +158,12 @@ custom_css: gear
         for(var i=0; i < weightValues.length; i++) {
             var oz = parseFloat(weightValues[i].getAttribute('data-weightoz'));
             
-            if(weightUnitVal == 'oz')       weightValues[i].textContent = oz;
-            else if(weightUnitVal == 'lbs')  weightValues[i].textContent = (oz / 16.0).toFixed(2);
+            var weightVal = Number.NaN;
+            if(weightUnitVal == 'oz')       weightVal = oz;
+            else if(weightUnitVal == 'lbs') weightVal = (oz / 16.0).toFixed(2);
+
+            if(isNaN(weightVal))    weightValues[i].textContent = ''
+            else                    weightValues[i].textContent = weightVal
         }
     }
 </script>

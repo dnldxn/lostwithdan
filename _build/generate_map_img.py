@@ -12,7 +12,7 @@ imgOutPath = os.path.join(wd, "../img/googlemap.png")
 # map options
 baseurl = "https://maps.googleapis.com/maps/api/staticmap?"
 options = "size=640x400&zoom=5&scale=2"
-marker = "markers=icon:https://goo.gl/otDBv3"
+marker = "markers=anchor:center|icon:https://goo.gl/otDBv3"
 style = "style=feature:landscape|lightness:40&style=feature:road|visibility:simplified"
 api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
 

@@ -75,7 +75,7 @@ function drawChart() {
             showTextEvery: 1
         },
         
-        height: 150,
+        height: 120,
         legend: { position: 'none' },
         lineWidth: 4,
         series: {
