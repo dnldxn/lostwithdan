@@ -9,6 +9,12 @@ locationsPath = os.path.join(wd, "../_data/atdb.092116023143.ALL.csv")
 statsFilePath = os.path.join(wd, "../_data/stats.json")
 imgOutPath = os.path.join(wd, "../img/googlemap.png")
 
+# constants
+TYPE_COL = 'type'
+LAT_COL = 'lat'
+LONG_COL = 'lon'
+DATE_COL = 'dt_reached'
+
 # map options
 baseurl = "https://maps.googleapis.com/maps/api/staticmap?"
 options = "size=640x400&zoom=5&scale=2"
@@ -17,19 +23,19 @@ style = "style=feature:landscape|lightness:40&style=feature:road|visibility:simp
 api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
 
 # read in locations from csv file
-locations = pd.read_csv(locationsPath, index_col='id')
-shelters = locations[locations['type'] == 'SHELTER']
+locations = pd.read_csv(locationsPath, usecols=[TYPE_COL, LAT_COL, LONG_COL, DATE_COL])
+shelters = locations[locations[TYPE_COL] == 'SHELTER']
 
 # append the lat-long of each shelter to the url path
 path = 'path=weight:2'
 for index, row in shelters.iterrows():
-    lat = "{:.4f}".format(row['lat'])
-    long = "{:.4f}".format(row['lon'])
+    lat = "{:.4f}".format(row[LAT_COL])
+    long = "{:.4f}".format(row[LONG_COL])
     path = path + '|' + lat + ',' + long
 
 # get the last know current location
-completed = locations[locations['dt_reached'].notnull()][['lat', 'lon']].iloc[-1]
-marker = marker + '|' + str(completed['lat']) + ',' + str(completed['lon'])
+completed = locations[locations[DATE_COL].notnull()][[LAT_COL, LONG_COL]].iloc[-1]
+marker = marker + '|' + str(completed[LAT_COL]) + ',' + str(completed[LONG_COL])
 
 # build final url
 url = baseurl + options + '&' + marker + '&' + style + '&' + path + '&' + api_key
