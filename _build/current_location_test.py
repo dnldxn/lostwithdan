@@ -37,7 +37,7 @@ class TestCurrentLocation(unittest.TestCase):
         bak = self.df.copy()
 
         loc = current_location(self.df)
-        expected = {'current_location': {"lon": '-84.19', 'dt_reached': '2017-03-09', 'lat': '34.61', 'name': 'Springer Mt, GA'}}
+        expected = {'current_location': {"lon": '-84.19', 'dt_reached': '2017-03-13', 'lat': '34.61', 'name': 'Springer Mt, GA'}}
 
         self.assertDictEqual(expected, loc)
 

@@ -18,16 +18,13 @@ header:
     <div class="statsBox" id="pace_chart">Pace</div>
     <div class="statsBox">
         <table>
-            <tr><td>Started</td><td>March 8, 2017</td></tr>
+            <tr><td>Started</td><td>{{ site.data.stats.start_date }}</td></tr>
             <tr><td>Est Finish</td><td>September 15, 2017</td></tr>
-            <tr><td>Days since Start</td><td>15</td></tr>
+            <tr><td>Days on Trail</td><td>{{ site.data.stats.days_on_trail }}</td></tr>
         </table>
     </div>
 </div>
 
-<!--{% for day in site.data.stats.miles_per_day %}
-    {{ day[0] }} - {{ day[1] }}
-{% endfor %}-->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
