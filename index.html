@@ -10,9 +10,9 @@ header:
 <div id="statsContainer">
     <div class="statsBox">
         <table>
-            <tr><td>Walked</td><td>500 miles</td></tr>
-            <tr><td>Remaining</td><td>500 more</td></tr>
-            <tr><td>Location</td><td>At your door</td></tr>
+            <tr><td>Walked</td><td>{{ site.data.stats.miles_hiked }} miles</td></tr>
+            <tr><td>Remaining</td><td>{{ site.data.stats.miles_remaining }} miles</td></tr>
+            <tr><td>Location</td><td>{{ site.data.stats.current_location.name }}</td></tr>
         </table>
     </div>
     <div class="statsBox" id="pace_chart">Pace</div>
@@ -24,6 +24,10 @@ header:
         </table>
     </div>
 </div>
+
+<!--{% for day in site.data.stats.miles_per_day %}
+    {{ day[0] }} - {{ day[1] }}
+{% endfor %}-->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 

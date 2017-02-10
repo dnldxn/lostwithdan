@@ -8,42 +8,12 @@ function drawChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('date', '');
     data.addColumn('number', 'Miles');
-    data.addRows([ 
-        [new Date(2017,3,8),    7],
-        [new Date(2017,3,9),    10],
-        [new Date(2017,3,10),   12],
-        [new Date(2017,3,11),   11],
-        [new Date(2017,3,12),   14],
-        [new Date(2017,3,13),   15],
-        [new Date(2017,3,14),   9],
-        [new Date(2017,3,15),   8],
-        [new Date(2017,3,16),   14],
-        [new Date(2017,3,17),   13],
-        [new Date(2017,3,18),   16],
-        [new Date(2017,3,19),   15],
-        [new Date(2017,3,20),   9],
-        [new Date(2017,3,21),   8],
-        [new Date(2017,3,22),   14],
-        [new Date(2017,3,23),   13],
-        [new Date(2017,3,24),   16],
-        [new Date(2017,3,25),    12],
-        // [new Date(2017,3,26),    15],
-        // [new Date(2017,3,27),   17],
-        // [new Date(2017,3,28),   16],
-        // [new Date(2017,3,29),   19],
-        // [new Date(2017,3,30),   20],
-        // [new Date(2017,3,31),   14],
-        // [new Date(2017,4,1),   13],
-        // [new Date(2017,4,2),   19],
-        // [new Date(2017,4,3),   18],
-        // [new Date(2017,4,4),   21],
-        // [new Date(2017,4,5),   20],
-        // [new Date(2017,4,6),   0],
-        // [new Date(2017,4,7),   16],
-        // [new Date(2017,4,8),   19],
-        // [new Date(2017,4,9),   19],
-        // [new Date(2017,4,10),   18]
+    data.addRows([
+        {% for day in site.data.stats.miles_per_day | sort %}
+            [ new Date('{{ day[0] }}'), {{ day[1] }}],
+        {% endfor %}
     ]);
+    data.sort({column: 0, desc: false});
 
     // Calculate a new column to hold the rolling average
     var days = 7;
@@ -74,13 +44,15 @@ function drawChart() {
             },
             showTextEvery: 1
         },
-        
         height: 120,
         legend: { position: 'none' },
         lineWidth: 4,
         series: {
             0: {type: 'bars', lineWidth: 100 },
             1: {type: 'line', lineDashStyle: [8, 4]}
+        },
+        titleTextStyle: {
+            color: '#5b5f63'  // soften the text from black to light grey
         },
         vAxis: {
             gridlines: {
