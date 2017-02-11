@@ -16,7 +16,7 @@ function initMap() {
     });
 
     // Load coordinates from CSV file and convert to JSON structure
-    var coordinates = {{ site.data.atdb092116023143ALL | jsonify }};
+    var coordinates = {{ site.data.atdb092116023143ALL | where_exp: "p", "p.type != 'TOWN'" | where_exp: "p", "p.type != 'HOSTEL'" | jsonify }};
     var latLngArray = new Array();
 
     var smallCircle = {
@@ -28,18 +28,18 @@ function initMap() {
     };
 
     var hikerIcon = {
-        url: "img/hiker.svg",
-        //scaledSize: new google.maps.Size(50, 63),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(25,25)
+        url: "/img/hiker.svg",
+        size: new google.maps.Size(50, 63),
+        // scaledSize: new google.maps.Size(50, 63),
+        origin: null,
+        anchor: null
     };
 
     for (var i = 0; i < coordinates.length; i++ ) {
         var c = coordinates[i]
         
-        if( ["FEATURE","SHELTER"].indexOf(c.type) > -1 && c.lat && c.lon ) {
-            //console.log(i + ", " + c.type + ", " + c.name + ", " + c.lat + ", " + c.lon)
-
+        if( c.lat && c.lon ) {
+            // Mark the POI on the map with a red dot
             var position = new google.maps.LatLng(c.lat, c.lon);
             //bounds.extend(position);
             marker = new google.maps.Marker({
@@ -50,17 +50,19 @@ function initMap() {
                 //animation: google.maps.Animation.DROP
             });
 
+            // Add the POI to a list that we use to draw the line later
             latLngArray.push(position);
 
-            // if(c.dt_reached && !coordinates[i+1].dt_reached) {
-            //     var currentLocation = new google.maps.Marker({
-            //         position: position,
-            //         map: map,
-            //         title: 'Current Location!',
-            //         icon: hikerIcon,
-            //         animation: google.maps.Animation.DROP
-            //     });
-            // }
+            // Add a point for the current location (where am I now)
+            if(c.dt_reached && !coordinates[i+1].dt_reached) {
+                var currentLocation = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: 'Current Location!',
+                    icon: hikerIcon,
+                    animation: google.maps.Animation.DROP
+                });
+            }
         }
     }
 
