@@ -9,18 +9,21 @@
  * Styles for the stats box below the map
  */
 
-#main {
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    max-width: 100%;
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.box {
+    display: flex;
+    height: 100%;
 }
 
 #googleMap {
-  position: relative;
-  height: 550px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
 }
 
 .page__footer {

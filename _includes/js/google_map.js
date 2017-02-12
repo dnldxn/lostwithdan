@@ -2,11 +2,11 @@ var map;
 
 function initMap() {
 
-    //var bounds = new google.maps.LatLngBounds();
+    var bounds = new google.maps.LatLngBounds();
 
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: {lat: 40.2, lng: -78.1093641},
-        zoom: 6,
+        // center: {lat: 40.2, lng: -78.1093641},
+        // zoom: 6,
         mapTypeControl: true,
             mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -21,18 +21,10 @@ function initMap() {
 
     var smallCircle = {
         path: 'M -1 0 A 1 1, 0, 0, 0, 1 0 A 1 1, 0, 1, 0, -1 0',
-        fillColor: 'red',
+        fillColor: 'mediumslateblue',
         fillOpacity: 0.3,
         scale: 4,
         strokeWeight: 0
-    };
-
-    var hikerIcon = {
-        url: "/img/hiker.svg",
-        size: new google.maps.Size(50, 63),
-        // scaledSize: new google.maps.Size(50, 63),
-        origin: null,
-        anchor: null
     };
 
     for (var i = 0; i < coordinates.length; i++ ) {
@@ -41,7 +33,7 @@ function initMap() {
         if( c.lat && c.lon ) {
             // Mark the POI on the map with a red dot
             var position = new google.maps.LatLng(c.lat, c.lon);
-            //bounds.extend(position);
+            bounds.extend(position);
             marker = new google.maps.Marker({
                 position: position,
                 map: map,
@@ -59,7 +51,11 @@ function initMap() {
                     position: position,
                     map: map,
                     title: 'Current Location!',
-                    icon: hikerIcon,
+                    icon: {
+                        url: "/img/hiker_med.png",
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(25, 40),  // just a little up from the bottom center (the image is 50 x 62)
+                    },
                     animation: google.maps.Animation.DROP
                 });
             }
@@ -67,13 +63,13 @@ function initMap() {
     }
 
     // Automatically center the map fitting all markers on the screen
-    //map.fitBounds(bounds);
+    map.fitBounds(bounds);
 
     // Draw a line over all of the points
     var trailPath = new google.maps.Polyline({
         path: latLngArray,
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: 'mediumslateblue',
         strokeOpacity: 0.6,
         strokeWeight: 6
     });
