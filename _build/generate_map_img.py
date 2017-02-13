@@ -18,7 +18,7 @@ DATE_COL = 'dt_reached'
 # map options
 baseurl = "https://maps.googleapis.com/maps/api/staticmap?"
 options = "size=640x400&zoom=5&scale=2"
-marker = "markers=anchor:center|icon:https://goo.gl/otDBv3"
+current_location_marker = "markers=scale:2|anchor:center|icon:https://goo.gl/otDBv3"
 style = "style=feature:landscape|lightness:40&style=feature:road|visibility:simplified"
 api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
 
@@ -35,10 +35,10 @@ for index, row in shelters.iterrows():
 
 # get the last know current location
 completed = locations[locations[DATE_COL].notnull()][[LAT_COL, LONG_COL]].iloc[-1]
-marker = marker + '|' + str(completed[LAT_COL]) + ',' + str(completed[LONG_COL])
+current_location_marker = current_location_marker + '|' + str(completed[LAT_COL]) + ',' + str(completed[LONG_COL])
 
 # build final url
-url = baseurl + options + '&' + marker + '&' + style + '&' + path + '&' + api_key
+url = baseurl + options + '&' + current_location_marker + '&' + style + '&' + path + '&' + api_key
 
 # The Google Maps api has a max length on urls.  Make sure our url is shorter than that
 assert(len(url) < 8192)
