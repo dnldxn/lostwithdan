@@ -4,12 +4,13 @@ layout: single
 title: Pictures
 ---
 
-<img src="http://az616578.vo.msecnd.net/files/2015/06/08/635693880042525992-518822648_couple-hiking-valley.jpg"></img>
+<!--<img src="http://az616578.vo.msecnd.net/files/2015/06/08/635693880042525992-518822648_couple-hiking-valley.jpg"></img>-->
 
-<!--
-<ul class="photo-gallery">
-  {% for image in page.images %}
-    <li><img src="{{ image.image_path }}" alt="{{ image.title}}"/></li>
-  {% endfor %}
-</ul>
--->
+
+<figure id="photo-gallery" class="third">
+</figure>
+
+
+<script type="text/javascript">
+    {% include /js/load_pictures.js %}
+</script>
