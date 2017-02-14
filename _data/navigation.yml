@@ -10,4 +10,4 @@ main:
   - title: "Send Me a Package!"
     url: /package/
   - title: "Contact"
-    url: https://google.com
+    url: /contact/

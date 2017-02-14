@@ -1,0 +1,28 @@
+---
+permalink: /contact/
+layout: single
+title: Contact
+---
+
+<br />
+<form id="contactForm" action="https://getsimpleform.com/messages?form_api_token=e7594e2ca2de770b7ec1cfa07b13f1c5" method="post">
+    <!-- the redirect_to is optional, the form will redirect to the referrer on submission -->
+    <input type='hidden' name='redirect_to' value='{{ site.url }}/thanks' />
+    
+    <!-- all your input fields here.... -->
+    <label for="email">Email</label>
+    <input id="email" type="text" name='email' />
+
+    <label for="message">Message</label>
+    <textarea id="message" name='message' rows="8"></textarea>
+
+    <input id="submit" type='submit' value='Submit' />
+</form>
+
+
+<!--<script>
+    var ele = document.getElementById("contactForm");
+    ele.onsubmit = function onSubmit(form) {
+        alert("submitted!!")
+    }
+</script>-->
