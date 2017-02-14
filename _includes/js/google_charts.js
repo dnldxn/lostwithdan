@@ -1,10 +1,10 @@
-// Load chart packages and set callback function to run when the Visualization API is loaded
+/* Load chart packages and set callback function to run when the Visualization API is loaded */
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-// Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it.
+/* Callback that creates and populates a data table, instantiates the pie chart, passes in the data and draws it. */
 function drawChart() {
-    // Create the data table.
+    /* Create the data table. */
     var data = new google.visualization.DataTable();
     data.addColumn('date', '');
     data.addColumn('number', 'Miles');
@@ -15,13 +15,13 @@ function drawChart() {
     ]);
     data.sort({column: 0, desc: false});
 
-    // Calculate a new column to hold the rolling average
+    /* Calculate a new column to hold the rolling average */
     var days = 7;
     var view = new google.visualization.DataView(data);
     view.setColumns([0, 1, {
         type: 'number',
         calc: function (dt, row) {
-            // calculate moving average
+            /* calculate moving average */
             var total = 0;
             var i = row;
             while(i >= 0 && row - i < days ) {
@@ -34,7 +34,7 @@ function drawChart() {
         }
     }]);
 
-    // Set chart options
+    /* Set chart options */
     var options = {
         title: 'Pace (Miles)',
         hAxis: {
@@ -52,7 +52,7 @@ function drawChart() {
             1: {type: 'line', lineDashStyle: [8, 4]}
         },
         titleTextStyle: {
-            color: '#5b5f63'  // soften the text from black to light grey
+            color: '#5b5f63'  /* soften the text from black to light grey */
         },
         vAxis: {
             gridlines: {
@@ -61,7 +61,7 @@ function drawChart() {
         }
     };
 
-    // Instantiate and draw our chart, passing in some options.
+    /* Instantiate and draw our chart, passing in some options. */
     var chart = new google.visualization.ComboChart(document.getElementById('pace_chart'));
     chart.draw(view, options);
 }
