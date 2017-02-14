@@ -1,14 +1,9 @@
-test:
-  stage: test
-  image: python:3.5
-  script:
-  - python -m unittest discover -s _build/
-
 prepare:
   stage: build
   image: python:3.5
   script:
   - pip install -r _build/requirements.txt
+  - python -m unittest discover -s _build/
   - python _build/build.py
   - python _build/generate_map_img.py
   artifacts:
