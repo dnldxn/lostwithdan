@@ -34,8 +34,12 @@ for index, row in shelters.iterrows():
     path = path + '|' + lat + ',' + long
 
 # get the last know current location
-completed = locations[locations[DATE_COL].notnull()][[LAT_COL, LONG_COL]].iloc[-1]
-current_location_marker = current_location_marker + '|' + str(completed[LAT_COL]) + ',' + str(completed[LONG_COL])
+completed = locations[locations[DATE_COL].notnull()][[LAT_COL, LONG_COL]]
+last_completed = locations[[LAT_COL, LONG_COL]].iloc[0]    # by default, use first location if nothing is completed
+if len(completed) > 0:
+    last_completed = completed.iloc[-1]
+
+current_location_marker = current_location_marker + '|' + str(last_completed[LAT_COL]) + ',' + str(last_completed[LONG_COL])
 
 # build final url
 url = baseurl + options + '&' + current_location_marker + '&' + style + '&' + path + '&' + api_key

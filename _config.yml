@@ -13,13 +13,19 @@ exclude:
 
 url:                https://dnldxn.gitlab.io
 
+# Analytics
+analytics:
+  provider:             "google"
+  google:
+    tracking_id:        "UA-91926226-1"
+
 # About/contact
 author:
   name:             Daniel Dixon
   email:            'dnldxn@gmail.com'
 
 # Custom vars
-version:             0.0.8
+version:             0.0.10
 
 # Outputting
 permalink:          pretty
