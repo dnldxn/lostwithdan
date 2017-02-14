@@ -11,7 +11,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-# url: http://192.168.99.100:4000
+url:                https://dnldxn.gitlab.io
 
 # About/contact
 author:
