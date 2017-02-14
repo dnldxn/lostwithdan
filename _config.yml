@@ -11,7 +11,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-url:                https://dnldxn.gitlab.io
+url:                http://dandixon.me
 
 # Analytics
 analytics:
