@@ -7,7 +7,7 @@ title: Contact
 <br />
 <form id="contactForm" action="https://getsimpleform.com/messages?form_api_token=e7594e2ca2de770b7ec1cfa07b13f1c5" method="post">
     <!-- the redirect_to is optional, the form will redirect to the referrer on submission -->
-    <input type='hidden' name='redirect_to' value='{{ site.url }}/thanks' />
+    <input id='redirect_url_input' type='hidden' name='redirect_to' value='{{ site.url }}/thanks' />
     
     <!-- all your input fields here.... -->
     <label for="email">Email</label>
@@ -20,9 +20,7 @@ title: Contact
 </form>
 
 
-<!--<script>
-    var ele = document.getElementById("contactForm");
-    ele.onsubmit = function onSubmit(form) {
-        alert("submitted!!")
-    }
-</script>-->
+<script>
+    /* The form above needs an absolute URL to redirect back after the message is submitted, however Jekyll can only create static pages.  So the URL needs to be built in Javascript here. */
+    document.getElementById("redirect_url_input").value = window.location.origin + '/thanks'
+</script>
