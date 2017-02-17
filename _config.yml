@@ -11,8 +11,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-url:                http://dandixon.me
-
 # Analytics
 analytics:
   provider:             "google"
@@ -29,8 +27,26 @@ version:             0.0.10
 
 # Outputting
 permalink:          pretty
-paginate:           5  # amount of posts to show
-timezone:           'America/Los_Angeles'    # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+paginate:           5                               # amount of posts to show
+timezone:           'America/Los_Angeles'           # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+gitlab-letsencrypt:
+  # Gitlab settings:
+  personal_access_token: 'XzavcLkj8sNLeVBbz82D'       # Gotten from the step above ^^
+  gitlab_repo:           'dnldxn/dnldxn.gitlab.io'    # Namespaced repository identifier
+
+  # Domain settings:
+  email:                 'dnldxn@gmail.com.com'       # Let's Encrypt email address
+  domain:                'lostwithdan.com'            # Domain that the cert will be issued for
+
+  # Jekyll settings:
+  base_path:        './'                              # Where you want the file to go
+  pretty_url:       true                              # Add a "/" on the end of the URL... set to `true` if you use permalink_style: pretty
+  filename:         'letsencrypt.html'                # What to call the generated challenge file
+
+  # Delay settings:
+  initial_delay:    240                               # How long to wait for Gitlab CI to push your changes before it starts checking
+  delay_time:       15                                # How long to wait between each check once it starts looking for the file
 
 # Enable Plugins
 gems:
