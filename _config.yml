@@ -1,15 +1,22 @@
 # Site Settings
-locale:             'en'
-title:              'App Trail'
-tagline:            'Getting lost in the woods with friends!'
-description:        'Getting lost in the woods with friends!'
-theme:              minimal-mistakes-jekyll
+locale:             "en-US"
+title:              "App Trail"
+tagline:            "Getting lost in the woods with friends!"
+description:        "Getting lost in the woods with friends!"
+theme:              "minimal-mistakes-jekyll"
+future:             true
 include:            
-  - "_pages"
-  - "assets"
+  - _pages
+  - assets
 exclude:
   - Gemfile
   - Gemfile.lock
+  - README.md
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - debug.log
 
 # Analytics
 analytics:
@@ -19,8 +26,8 @@ analytics:
 
 # About/contact
 author:
-  name:             Daniel Dixon
-  email:            'dnldxn@gmail.com'
+  name:             "Daniel Dixon"
+  email:            "dnldxn@gmail.com"
 
 # Custom vars
 version:             0.0.10
@@ -69,8 +76,8 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: true
-      comments: # true
-      share: true
-      related: true
+      comments: false
+      share: false
+      related: false
