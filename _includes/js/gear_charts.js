@@ -17,30 +17,31 @@ function drawChart() {
                 {% assign w = item.weight | times: item.qty %}
                 {% assign cat_weight = cat_weight | plus: w %}
             {% endfor %}
-
             ['{{ category.name }}', {{ cat_weight }}],
         {% endfor %}
     ]);
 
+    /* Manually define the Google color pallette so the colors are in a predictable order */
+    var colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#66AA00','#DD4477',
+    '#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC']
+
     /* Set chart options */
     var options = {
-        legend : 'none'
+        legend : 'none',
+        colors: colors
     };
 
     /* Instantiate and draw our chart, passing in some options. */
     var chart = new google.visualization.PieChart(document.getElementById('weight_chart'));
     chart.draw(data, options);
 
-    var length = $('#weight_chart svg g path').length
-
-    /* Step through all the labels in the legend. */
-    $('#weight_chart svg g path').each(function (i, v) {
-        
+    /* Step through all rows of the dataset and color the circles in the summary table */
+    for (var i = 0; i < data.getNumberOfRows(); i++) {
         /* Retrieve the name of the category in the first column of the data table */
-        var name = data.getValue(length - 1 - i, 0);
-        var color = $(v).css('fill');
+        var name = data.getValue(i, 0);
+        var color = colors[i];
 
         /* Draw a small circle in the first column of the summary table */
         $('#' + name + 'color svg circle' ).css('fill', color)
-    });
+    }
 }
