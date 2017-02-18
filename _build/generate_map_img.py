@@ -11,12 +11,6 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
     LONG_COL = 'lon'
     DATE_COL = 'dt_reached'
 
-    # calculate the bounds of this box
-    left = center_lat - offset_lat
-    right = center_lat + offset_lat
-    top = center_long + offset_long
-    bottom = center_long - offset_long
-
     # map options
     baseurl = "https://maps.googleapis.com/maps/api/staticmap?"
     options = "center=" + str(center_lat) + "," + str(center_long) + "&size=640x420&zoom=6&scale=2"
@@ -30,8 +24,6 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
     # append the lat-long of each shelter to the url path
     path = 'path=weight:4'
     for index, row in shelters.iterrows():
-
-        # if( (row[LAT_COL] > left) & (row[LAT_COL] < right) & (row[LONG_COL] > bottom) & (row[LONG_COL] < top) ):
         lat = "{:.4f}".format(row[LAT_COL])
         long = "{:.4f}".format(row[LONG_COL])
 
@@ -61,37 +53,40 @@ def combine_images(img_path_out, top_left, top_right, bottom_right, bottom_left)
     bottom_right    = Image.open(bottom_right)
     bottom_left     = Image.open(bottom_left)
 
+    # all four images should have the same heights and widths
     assert(top_left.height == top_right.height == bottom_right.height == bottom_left.height)
     assert(top_left.width == top_right.width == bottom_right.width == bottom_left.width)
 
-    square_height = top_left.height
-    square_width = top_left.width
+    quad_height = top_left.height
+    quad_width = top_left.width
 
     # Crop out Google logo
     crop_pixels = 45
-    top_left        = top_left.crop((0, 0, square_width, square_height - crop_pixels))
-    top_right       = top_right.crop((0, 0, square_width, square_height - crop_pixels))
-    bottom_right    = bottom_right.crop((0, 0, square_width, square_height - crop_pixels))
-    bottom_left     = bottom_left.crop((0, 0, square_width, square_height - crop_pixels))
+    top_left        = top_left.crop((0, 0, quad_width, quad_height - crop_pixels))
+    top_right       = top_right.crop((0, 0, quad_width, quad_height - crop_pixels))
+    bottom_right    = bottom_right.crop((0, 0, quad_width, quad_height - crop_pixels))
+    bottom_left     = bottom_left.crop((0, 0, quad_width, quad_height - crop_pixels))
 
     # create new image canvas
-    new_width = 2 * square_width
-    new_height = 2 * square_height - (2*crop_pixels)
+    new_width = 2 * quad_width
+    new_height = 2 * quad_height - (2*crop_pixels)
 
     new_im = Image.new('RGB', (new_width, new_height))
 
     # paste the four quadrants into their respective locations
     new_im.paste(top_left,      (0, 0))
-    new_im.paste(top_right,     (square_width, 0))
-    new_im.paste(bottom_right,  (square_width, square_height - crop_pixels))
-    new_im.paste(bottom_left,   (0, square_height - crop_pixels))
+    new_im.paste(top_right,     (quad_width, 0))
+    new_im.paste(bottom_right,  (quad_width, quad_height - crop_pixels))
+    new_im.paste(bottom_left,   (0, quad_height - crop_pixels))
 
     # scale down the image to make it smaler
-    new_width_scaled = round(new_width/1.7)
-    new_height_scaled = round(new_height/1.8)
+    new_width_scaled = round(new_width/1.6)
+    new_height_scaled = round(new_height/1.7)
 
     new_im = new_im.resize((new_width_scaled, new_height_scaled), Image.ANTIALIAS)
-    new_im.save(img_path_out)
+
+    # save image to disk
+    new_im.save(img_path_out, optimize=True, quality=85)
 
 
 if __name__ == "__main__":
