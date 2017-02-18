@@ -8,6 +8,10 @@ custom_css: gear
 
 {% assign categories = site.data.gear | group_by: "category" %}
 
+{% assign worn_weight_total = 0 %}
+{% assign base_weight_total = 0 %}
+{% assign weight_total = 0 %}
+
 <select id="weightUnitSelector" onchange="weightUnitChange()">
   <option value="oz">Oz</option>
   <option value="lbs">Lbs</option>
@@ -30,13 +34,18 @@ custom_css: gear
             </tr>
         <thead>
         <tbody>
-            {% assign weight_total = 0 %}
+            
             {% for category in categories %}
                 {% assign cat_weight_total = 0 %}
 
                 <!-- Add up the items in the category to a category total weight -->
                 {% for item in category.items %}
-                    {% assign w = item.weight | times: item.qty %}
+                    {% assign qty = item.qty | minus: item.worn %}
+                    {% assign w = item.weight | times: qty %}
+                    {% assign w_worn = item.weight | times: item.worn %}
+                    
+                    {% assign worn_weight_total = worn_weight_total | plus: w_worn %}
+                    {% if category.name != 'Variable' %}{% assign base_weight_total = base_weight_total | plus: w %}{% endif %}
                     {% assign cat_weight_total = cat_weight_total | plus: w %}
                 {% endfor %}
 
@@ -63,7 +72,19 @@ custom_css: gear
         <tfoot>
             <tr>
                 <td></td>
-                <td><b>Total</b></td>
+                <td><b>Worn</b></td>
+                <td class="weightValue" data-weightoz="{{ worn_weight_total }}">{{ worn_weight_total }}</td>
+                <td class="weightUnit">oz</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b><div class="tooltip">Base Weight *<span class="tooltiptext">Does not include food, water, and clothing worn</span></div></b></td>
+                <td class="weightValue" data-weightoz="{{ base_weight_total }}">{{ base_weight_total }}</td>
+                <td class="weightUnit">oz</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b><div class="tooltip">Total *<span class="tooltiptext">Base weight + food and water</span></div></b></td>
                 <td class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total }}</td>
                 <td class="weightUnit">oz</td>
             </tr>
@@ -91,7 +112,10 @@ custom_css: gear
         <thead>
         <tbody>
             {% for item in category.items %}
-                {% assign w = item.weight | times: item.qty %}
+
+                {% assign qty = item.qty | minus: item.worn %}
+                {% assign w = item.weight | times: qty %}
+                
                 {% assign weight_total = weight_total | plus: w %}
                 {% assign qty_total = qty_total | plus: item.qty %}
                 <tr>
@@ -103,6 +127,10 @@ custom_css: gear
                             <a href="{{ item.url }}"> {{ item.brand }} </a>
                         {% else %}
                             {{ item.brand }}
+                        {% endif %}
+
+                        {% if item.worn != '0' %}
+                            <div class="tooltip wornIcon"><img src="/img/clothes-t-shirt-icon.png"><span class="tooltiptext">Item is worn and not included in the weight total</span></img></div>
                         {% endif %}
                     </td>
                     <td>
