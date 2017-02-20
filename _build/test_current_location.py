@@ -6,10 +6,10 @@ from build import current_location
 
 class TestCurrentLocation(unittest.TestCase):
     def setUp(self):
-        lats = [34.61, 34.64, 34.66]
-        longs = [-84.19, -84.17, -84.12]
-        names = ['Springer Mt', 'Gooch Mountain Shelter', 'Muskrat Creek Shelter']
-        states = ['GA', 'GA', 'NC']
+        lats = [34.62673, 34.64, 45.904362]
+        longs = [-84.193656, -84.17, -68.921392]
+        names = ['Springer Mt', 'Gooch Mountain Shelter', 'Mt Katahdin']
+        states = ['GA', 'GA', 'ME']
 
         self.df = pd.DataFrame({'lat': lats, 'lon': longs, 'name': names, 'state': states})
 
@@ -22,7 +22,7 @@ class TestCurrentLocation(unittest.TestCase):
         bak = self.df.copy()
 
         loc = current_location(self.df)
-        expected = {'current_location': {'lon': '-84.19', 'dt_reached': '2017-03-08', 'lat': '34.61', 'name': 'Springer Mt, GA'}}
+        expected = {'current_location': {'lon': '-84.1937', 'dt_reached': '2017-03-08', 'lat': '34.6267', 'name': 'Springer Mt, GA'}}
         self.assertDictEqual(expected, loc)
 
         # make sure we didn't alter the original data
@@ -37,7 +37,7 @@ class TestCurrentLocation(unittest.TestCase):
         bak = self.df.copy()
 
         loc = current_location(self.df)
-        expected = {'current_location': {"lon": '-84.19', 'dt_reached': '2017-03-13', 'lat': '34.61', 'name': 'Springer Mt, GA'}}
+        expected = {'current_location': {"lon": '-84.1937', 'dt_reached': '2017-03-13', 'lat': '34.6267', 'name': 'Springer Mt, GA'}}
 
         self.assertDictEqual(expected, loc)
 
@@ -53,7 +53,7 @@ class TestCurrentLocation(unittest.TestCase):
         bak = self.df.copy()
 
         loc = current_location(self.df)
-        expected = {'current_location': {'lon': '-84.12', 'dt_reached': '2017-03-10', 'lat': '34.66', 'name': 'Muskrat Creek Shelter, NC'}}
+        expected = {'current_location': {'lon': '-68.9214', 'dt_reached': '2017-03-10', 'lat': '45.9044', 'name': 'Mt Katahdin, ME'}}
         self.assertDictEqual(expected, loc)
 
         # make sure we didn't alter the original data

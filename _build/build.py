@@ -33,8 +33,8 @@ def current_location(df):
     df.drop(STATE_COL, axis=1, inplace=True)
 
     # fix rounding issue with lat longs
-    df[LAT_COL] = df[LAT_COL].apply(lambda x: "{:.2f}".format(x))
-    df[LONG_COL] = df[LONG_COL].apply(lambda x: "{:.2f}".format(x))
+    df[LAT_COL] = df[LAT_COL].apply(lambda x: "{:.4f}".format(x))
+    df[LONG_COL] = df[LONG_COL].apply(lambda x: "{:.4f}".format(x))
 
     # find the completed sections
     completed = get_completed(df)[[LAT_COL, LONG_COL, DATE_COL, NAME_COL]]

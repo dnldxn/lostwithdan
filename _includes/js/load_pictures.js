@@ -57,7 +57,7 @@ function myFunction(arr) {
         var small = buildPhotoUrl(photos[i])
         var full = buildLightBoxUrl(photos[i])
 
-        out += '<a href="'+ full + '"><img src="'+ small + '" alt="" /></a>'
+        out += '<a href="'+ full + '" target="_blank"><img src="'+ small + '" alt="" /></a>'
     }
     document.getElementById("photo-gallery").innerHTML = out;
 }
