@@ -10,8 +10,8 @@ header:
 <div id="statsContainer">
     <div class="statsBox">
         <table>
-            <tr><td>Walked</td><td>{{ site.data.stats.miles_hiked }} miles</td></tr>
-            <tr><td>Remaining</td><td>{{ site.data.stats.miles_remaining }} miles</td></tr>
+            <tr><td>Walked</td><td>{{ site.data.stats.current_location.miles_hiked }} miles</td></tr>
+            <tr><td>Remaining</td><td>{{ site.data.stats.current_location.miles_remaining }} miles</td></tr>
             <tr><td>Location</td><td>{{ site.data.stats.current_location.name }}</td></tr>
         </table>
     </div>
@@ -19,7 +19,7 @@ header:
     <div class="statsBox">
         <table>
             <tr><td>Started</td><td>{{ site.data.stats.start_date }}</td></tr>
-            <tr><td>Est Finish</td><td>September 15, 2017</td></tr>
+            <tr><td>Est Finish</td><td>{{ site.data.stats.estimated_completion.date }}</td></tr>
             <tr><td>Days on Trail</td><td>{{ site.data.stats.days_on_trail }}</td></tr>
         </table>
     </div>
