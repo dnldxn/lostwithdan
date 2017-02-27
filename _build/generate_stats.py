@@ -112,7 +112,7 @@ def days_on_trail(df):
 
 
 def predict_completion(df):
-    df = df[df['type'].isin(['FEATURE', 'SHELTER'])]
+    df = df[df[TYPE_COL].isin(['FEATURE', 'SHELTER', 'HUT'])]
     df = df[[TO_SPRINGER_COL, ELEV_COL, DATE_COL]]
     df['dt_reached_dt'] = df['dt_reached'].dt.date
 
@@ -150,11 +150,11 @@ def predict_completion(df):
 
     # Create prediction objects
     regr = LinearRegression()
-    svr = SVR()
+    # svr = SVR()
     dtr = DecisionTreeRegressor()
     knn = KNeighborsRegressor(n_neighbors=round(len(training) / 5 + 1), weights='distance')
 
-    estimators = [('reg', regr), ('svr', svr), ('dtr', dtr), ('knn', knn)]
+    estimators = [('reg', regr), ('dtr', dtr), ('knn', knn)]
 
     # Create the ensemble model and fit
     # ensemble = VotingClassifier(estimators)
@@ -181,7 +181,7 @@ def predict_completion(df):
 
     # Sum the predictions for all the remaining segments.  notice we add a 5% buffer to the estimate.
     predicted_time_to_finish_sec = predict['prediction'].sum()
-    predicted_time_to_finish_days = predicted_time_to_finish_sec * 1.10 / 60 / 60 / 8
+    predicted_time_to_finish_days = predicted_time_to_finish_sec * 1.1 / 60 / 60 / 8
 
     # Average the predicted finish and estimated finish.  This ensures the prediction doesn't get too crazy,
     # especially in the first few weeks when there is little training data.

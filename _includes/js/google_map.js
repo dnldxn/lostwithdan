@@ -20,7 +20,7 @@ function initMap() {
     /* Load coordinates from CSV file and create POI array */
     var coordinates = [
         {% for p in site.data.atdb092116023143ALL %}
-            {% if p.type == 'SHELTER' or p.type == 'FEATURE' %}
+            {% if p.type == 'SHELTER' or p.type == 'FEATURE' or p.type == 'HUT' %}
                 {% if p.lat and p.lon %}
                     { name: "{{p.name}}", position: new google.maps.LatLng( {{p.lat}}, {{p.lon}} ) },
                 {% endif %}

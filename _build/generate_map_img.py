@@ -19,7 +19,7 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
     api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
 
     # read in locations from csv file
-    shelters = checkpoints[checkpoints[TYPE_COL] == 'SHELTER']
+    shelters = checkpoints[checkpoints[TYPE_COL].isin(['SHELTER', 'HUT'])]
 
     # append the lat-long of each shelter to the url path
     path = 'path=weight:4'

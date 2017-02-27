@@ -36,6 +36,11 @@ docker run --name python --rm -it ^
 -v c:/Users/dnldx/OneDrive/workspace/dnldxn.gitlab.io:/src ^
 python:3.6 ^
 /bin/bash
+
+pip install -r _build/requirements.txt
+python -m unittest discover -s _build/
+python _build/generate_stats.py
+python _build/generate_map_img.py
 ```
 
 # Docker Notebook
