@@ -13,8 +13,8 @@ custom_css: gear
 {% assign weight_total = 0 %}
 
 <select id="weightUnitSelector" onchange="weightUnitChange()">
-  <option value="oz">Oz</option>
-  <option value="lbs">Lbs</option>
+    <option value="lbs">Lbs</option>
+    <option value="oz">Oz</option>
 </select>
 
 <div class="summaryContainer">
@@ -61,10 +61,10 @@ custom_css: gear
                         {{ category.name }}
                     </td>
                     <td class="weightValue" data-weightoz="{{ cat_weight_total }}">
-                        {{ cat_weight_total }}
+                        {{ cat_weight_total | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }}
                     </td>
                     <td class="weightUnit">
-                        oz
+                        lbs
                     </td>
                 </tr>
             {% endfor %}
@@ -73,20 +73,20 @@ custom_css: gear
             <tr>
                 <td></td>
                 <td><b>Worn</b></td>
-                <td class="weightValue" data-weightoz="{{ worn_weight_total }}">{{ worn_weight_total }}</td>
-                <td class="weightUnit">oz</td>
+                <td class="weightValue" data-weightoz="{{ worn_weight_total }}">{{ worn_weight_total | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }}</td>
+                <td class="weightUnit">lbs</td>
             </tr>
             <tr>
                 <td></td>
                 <td><b><div class="tooltip">Base Weight *<span class="tooltiptext">Does not include food, water, and clothing worn</span></div></b></td>
-                <td class="weightValue" data-weightoz="{{ base_weight_total }}">{{ base_weight_total }}</td>
-                <td class="weightUnit">oz</td>
+                <td class="weightValue" data-weightoz="{{ base_weight_total }}">{{ base_weight_total | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }}</td>
+                <td class="weightUnit">lbs</td>
             </tr>
             <tr>
                 <td></td>
                 <td><b><div class="tooltip">Total *<span class="tooltiptext">Base weight + food and water</span></div></b></td>
-                <td class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total }}</td>
-                <td class="weightUnit">oz</td>
+                <td class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }}</td>
+                <td class="weightUnit">lbs</td>
             </tr>
         </tfoot>
     </table>
@@ -134,8 +134,8 @@ custom_css: gear
                         {% endif %}
                     </td>
                     <td>
-                        <span class="weightValue" data-weightoz="{{ item.weight }}">{{ item.weight }} </span>
-                        <span class="weightUnit">oz</span>
+                        <span class="weightValue" data-weightoz="{{ item.weight }}">{{ item.weight | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }} </span>
+                        <span class="weightUnit">lbs</span>
                     </td>
                     <td>
                         {{ item.qty }}
@@ -148,8 +148,8 @@ custom_css: gear
                 <td />
                 <td />
                 <td>
-                    <b class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total }} </b>
-                    <b class="weightUnit">oz</b>
+                    <b class="weightValue" data-weightoz="{{ weight_total }}">{{ weight_total | divided_by:16.0 | times:100.0 | round | divided_by:100.0 }} </b>
+                    <b class="weightUnit">lbs</b>
                 </td>
                 <td>
                     <b>{{ qty_total }}</b>
