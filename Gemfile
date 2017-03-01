@@ -22,5 +22,5 @@ group :jekyll_plugins do
   gem "jekyll-gist"
   gem "jekyll-feed"
   gem "jemoji"
-  gem 'jekyll-gitlab-letsencrypt'
+  # gem 'jekyll-gitlab-letsencrypt'
 end
