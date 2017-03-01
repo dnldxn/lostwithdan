@@ -3,11 +3,12 @@ import pandas as pd
 import json
 from datetime import datetime
 from datetime import timedelta
-from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression, LassoCV, RidgeCV, ElasticNetCV
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import VotingClassifier
+from sklearn.ensemble import AdaBoostRegressor
 from sklearn.model_selection import cross_val_score
 
 
@@ -138,7 +139,7 @@ def predict_completion(df):
     predict = shifted[pd.isnull(shifted[DATE_COL])][['elev_diff', 'mileage']]
 
     # If not enough training data, output the manually estimated finish date
-    if len(training) < 4:
+    if len(training) < 6:
         estimated = datetime.strptime(ESTIMATED_FINISH_DT, '%Y-%m-%d')
         formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=estimated)
         return {'estimated_completion': {'date': formatted_dt}}
@@ -148,39 +149,55 @@ def predict_completion(df):
     y_train = training.ix[:,2].map(lambda x: x.total_seconds())
     X_predict = predict.ix[:, 0:2]
 
+    # Generate polynomial features
+    poly = PolynomialFeatures(2)
+    X_train = poly.fit_transform(X_train)
+    X_predict = poly.fit_transform(X_predict)
+
     # Create prediction objects
+    num_folds = min(round(len(X_train) / 10 + 1), 10)
+
     regr = LinearRegression()
-    # svr = SVR()
+    lasso = LassoCV(cv=num_folds, alphas=(1.0, 10.0, 20.0, 30.0, 40.0, 50.0), max_iter=10000)
+    ridge = RidgeCV(cv=num_folds, alphas=(1.0, 10.0, 20.0, 30.0, 40.0, 50.0))
+    elastic = ElasticNetCV(cv=num_folds, l1_ratio=[0.01, 0.05, .1, .3, .5, .7, .9, 1])
+    svr = SVR()
     dtr = DecisionTreeRegressor()
+    ada_dtr = AdaBoostRegressor(DecisionTreeRegressor(), n_estimators=500)
     knn = KNeighborsRegressor(n_neighbors=round(len(training) / 5 + 1), weights='distance')
+    ada_knn = AdaBoostRegressor(KNeighborsRegressor(n_neighbors=round(len(training) / 5 + 1), weights='distance'), n_estimators=500)
 
-    estimators = [('reg', regr), ('dtr', dtr), ('knn', knn)]
-
-    # Create the ensemble model and fit
-    # ensemble = VotingClassifier(estimators)
-    # ensemble.fit(X_train, y_train)
-
-    # Use the model to predict the completion time for each of the remaining segments
-    # y_predict = ensemble.predict(X_predict)
+    estimators = [
+        ('reg', regr, False),
+        ('lasso', lasso, True),
+        ('ridge', ridge, True),
+        ('elastic', elastic, True),
+        ('svr', svr, False),
+        ('dtr', dtr, False),
+        ('ada_dtr', ada_dtr, True),
+        ('knn', knn, False),
+        ('ada_knn', ada_knn, True)
+    ]
 
     # Calculate error separately for all methods.  The error is expressed in absolute mean hours.
     errors = {}
-    for name, e in estimators:
-        e.fit(X_train, y_train)
-        predict[name] = e.predict(X_predict)
+    for name, estimator, include_in_prediction in estimators:
+        estimator.fit(X_train, y_train)
+        if include_in_prediction:
+            predict[name] = estimator.predict(X_predict)
 
-        scores = cross_val_score(e, X_train, y_train, cv=2, scoring='neg_mean_absolute_error')
+        scores = cross_val_score(estimator, X_train, y_train, cv=num_folds, scoring='neg_mean_absolute_error')
         errors[name+"_error"] = "{:.2f} (+/- {:.2f})".format(scores.mean() / 60 / 60, scores.std() / 60 / 60 * 2)
 
-    # The final prediction is the average over all the predictors
-    predict['prediction'] = predict[[e[0] for e in estimators]].mean(axis=1)
+    # Run a simple linear regression using all the predictions as meta-features
+    stacker = LinearRegression()
+    prediction_cols = [e[0] for e in estimators if e[2]]
+    stacker.fit(training[prediction_cols], y_train)
+    predictions = stacker.predict(predict[prediction_cols])
 
-    # Calculate error for entire ensemble.  The error is expressed in absolute mean hours.
-    # scores = cross_val_score(ensemble, X_train, y_train, cv=2, scoring='neg_mean_absolute_error')
-    # errors["ensemble_error"] = "{:.2f} (+/- {:.2f})".format(scores.mean() / 60 / 60, scores.std() / 60 / 60 * 2)
-
-    # Sum the predictions for all the remaining segments.  notice we add a 5% buffer to the estimate.
-    predicted_time_to_finish_sec = predict['prediction'].sum()
+    # Sum the predictions for all the remaining segments.  notice we add a 10% buffer to the estimate.
+    # Also this assumes 8 hours of hiking per day
+    predicted_time_to_finish_sec = predictions.sum()
     predicted_time_to_finish_days = predicted_time_to_finish_sec * 1.1 / 60 / 60 / 8
 
     # Average the predicted finish and estimated finish.  This ensures the prediction doesn't get too crazy,
@@ -190,8 +207,10 @@ def predict_completion(df):
 
     final_estimate = min(estimated_finish, predicted_finish) + abs(estimated_finish - predicted_finish)/2
 
-    formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=final_estimate)
-    ec = { 'estimated_completion': {'date':  formatted_dt, **errors}}
+    # Format the output
+    final_formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=final_estimate)
+    predicted_formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=predicted_finish)
+    ec = { 'estimated_completion': {'date':  final_formatted_dt, 'predicted':  predicted_formatted_dt, **errors}}
     return ec
 
 
@@ -204,6 +223,6 @@ if __name__ == "__main__":
     dat = days_on_trail(checkpoints)
     pc = predict_completion(checkpoints)
 
-    # write json file
+    # Write json file
     with open(fileOutPath, 'w') as outfile:
         json.dump({**cl, **mpd, **sd, **dat, **pc}, outfile)

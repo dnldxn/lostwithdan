@@ -5,7 +5,6 @@ from datetime import date
 
 from generate_stats import current_location
 from generate_stats import days_on_trail
-# from generate_stats import miles_hiked_miles_remaining
 from generate_stats import miles_hiked_per_day
 from generate_stats import predict_completion
 from generate_stats import start_date
@@ -154,26 +153,9 @@ class TestMilesHikedPerDay(Test):
 
 
 class TestPredictCompletion(Test):
-    # def setUp(self):
-    #     elev = [100, -200, 300, -400, 500, -600]
-    #     to_spgr = [0.0, 1.1, 1.1, 2.2, 3.4, 4.7]
-    #     type = ['SHELTER', 'SHELTER', 'SHELTER', 'SHELTER', 'SHELTER']
-
-    #     dt_reached = ['2017-03-08T12:30:00', '2017-03-08T13:01:00', '2017-03-09T08:00:00', '2017-03-09T08:31:00', pd.NaT]
-    #     self.normal_df = pd.DataFrame({'dt_reached': dt_reached, 'elev': elev, 'to_spgr': to_spgr, 'type': type})
-    #     self.normal_df['dt_reached'] = pd.to_datetime(self.normal_df['dt_reached'])
-
-    #     dt_reached = [pd.NaT, pd.NaT, pd.NaT, pd.NaT, pd.NaT]
-    #     self.empty_df = pd.DataFrame({'dt_reached': dt_reached, 'elev': elev, 'to_spgr': to_spgr, 'type': type})
-    #     self.empty_df['dt_reached'] = pd.to_datetime(self.empty_df['dt_reached'])
-
-    #     dt_reached = ['2017-03-08T12:31:00', '2017-03-14T13:32:00', '2017-03-15T14:33:00', pd.NaT]
-    #     self.zeros_df = pd.DataFrame({'dt_reached': dt_reached, 'elev': elev, 'to_spgr': to_spgr, 'type': type})
-    #     self.zeros_df['dt_reached'] = pd.to_datetime(self.empty_df['dt_reached'])
-
     def test_normal_hike(self):
         pc = predict_completion(self.normal_df)
-
+        print(pc)
         estimated_dt = datetime.strptime(pc['estimated_completion']['date'] , '%b %d, %Y').date()
         range_start = date(2017, 6, 1)
         range_finish = date(2017, 10, 1)
@@ -185,11 +167,13 @@ class TestPredictCompletion(Test):
         expected = {'estimated_completion': {'date': 'Sep 1, 2017'}}
         self.assertDictEqual(expected, pc)
 
-    # def test_zero_days(self):
-    #     # Should output the expected start date, since we have no date information
-    #     pc = predict_completion(self.zeros_df)
-    #     expected = {'estimated_completion': 'Sep 1, 2017'}
-    #     self.assertDictEqual(expected, pc)
+    def test_completed_hike(self):
+        pc = predict_completion(self.complete_df)
+        print(pc)
+        estimated_dt = datetime.strptime(pc['estimated_completion']['date'] , '%b %d, %Y').date()
+        range_start = date(2017, 8, 1)
+        range_finish = date(2017, 10, 1)
+        self.assertTrue( range_start <= estimated_dt <= range_finish )
 
 
 class TestStartDate(Test):
