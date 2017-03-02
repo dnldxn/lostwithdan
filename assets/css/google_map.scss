@@ -15,21 +15,32 @@ body {
     width: 100%;
 }
 
-.box {
+body {
+    margin-bottom: 0px !important;
     display: flex;
-    height: 100%;
+    flex-direction: column;
+}
+
+.box {
+    flex: 1;
+    position: relative;
 }
 
 #googleMap {
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .page__footer {
     margin-top: 0px;
-}
+    float: none;
+    position: relative;
 
-.page__footer footer {
-    margin-top: 0.5em;
+    footer {
+        margin-top: 0.5em;
+        padding-bottom: 1em;
+    }
 }

@@ -1,3 +1,6 @@
+---
+---
+
 {% assign current_lat = site.data.stats.current_location.lat %}
 {% assign current_lon = site.data.stats.current_location.lon %}
 
@@ -11,10 +14,11 @@ function initMap() {
         zoom: 8,
         mapTypeControl: true,
             mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-            position: google.maps.ControlPosition.TOP_RIGHT
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_RIGHT,
         },
-        streetViewControl: false
+        streetViewControl: false,
+        zoomControl: true
     });
 
     /* Load coordinates from CSV file and create POI array */
