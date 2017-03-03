@@ -1,3 +1,8 @@
+---
+---
+
+{% assign categories = site.data.gear | group_by: "category" %}
+
 /* Selector for chart element */
 var chartSelector = '#weight_chart';
 

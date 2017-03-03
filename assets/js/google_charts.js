@@ -1,3 +1,6 @@
+---
+---
+
 /* Load chart packages and set callback function to run when the Visualization API is loaded */
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
