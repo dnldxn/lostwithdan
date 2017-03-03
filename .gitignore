@@ -2,3 +2,11 @@ _site/
 public/
 .sass-cache/
 .jekyll-metadata
+*.pyc
+Gemfile.lock
+dnldxn.gitlab.io.iml
+misc.xml
+modules.xml
+vcs.xml
+workspace.xml
+settings.json
