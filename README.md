@@ -24,7 +24,7 @@ docker run --name jekyll -it --rm ^
 ruby:2.3 ^
 /bin/bash
 
-cd /src
+cd src
 bundle install
 JEKYLL_ENV=production jekyll serve --watch --force_polling --incremental --host=0.0.0.0
 ```

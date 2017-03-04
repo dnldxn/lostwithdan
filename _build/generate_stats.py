@@ -117,11 +117,11 @@ def predict_completion(df):
     df = df[[TO_SPRINGER_COL, ELEV_COL, DATE_COL]]
     df['dt_reached_dt'] = df['dt_reached'].dt.date
 
-    # Make a working copy of the data, and shift the rows so the row diffs can be computed
+    # Make a working copy of the data, and shift the rows so diffs between rows can be computed
     shifted = df.copy()
-    shifted['to_spgr_shifted'] = df[TO_SPRINGER_COL].shift(1)
-    shifted['elev_shifted'] = df[ELEV_COL].shift(1)
-    shifted['dt_reached_shifted'] = df[DATE_COL].shift(1)
+    shifted['to_spgr_shifted'] = shifted[TO_SPRINGER_COL].shift(1)
+    shifted['elev_shifted'] = shifted[ELEV_COL].shift(1)
+    shifted['dt_reached_shifted'] = shifted[DATE_COL].shift(1)
     shifted['dt_reached_dt_shifted'] = shifted['dt_reached_dt'].shift(1)
 
     # Remove the first row, since there is no diff between the first row and before it
@@ -132,8 +132,8 @@ def predict_completion(df):
     shifted['mileage'] = shifted[TO_SPRINGER_COL] - shifted['to_spgr_shifted']
     shifted['time_diff'] = shifted[DATE_COL] - shifted['dt_reached_shifted']
 
-    # Use rows that have completed dates to do the training, use the rest for prediction
-    # Notice we exclude calculating the overnight duration by filtering where the dates are different
+    # Use rows that have completed dates to train the model, use the rest for prediction
+    # Notice we exclude calculating the overnight duration by filtering out where the dates are different
     training = shifted[shifted['dt_reached_dt'] == shifted['dt_reached_dt_shifted']]
     training = training[['elev_diff', 'mileage', 'time_diff']]
     predict = shifted[pd.isnull(shifted[DATE_COL])][['elev_diff', 'mileage']]
@@ -149,7 +149,7 @@ def predict_completion(df):
     y_train = training.ix[:,2].map(lambda x: x.total_seconds())
     X_predict = predict.ix[:, 0:2]
 
-    # Generate polynomial features
+    # Generate polynomial features (x1, x2, x1*x2, x1^2, x2^2)
     poly = PolynomialFeatures(2)
     X_train = poly.fit_transform(X_train)
     X_predict = poly.fit_transform(X_predict)
@@ -189,7 +189,7 @@ def predict_completion(df):
         scores = cross_val_score(estimator, X_train, y_train, cv=num_folds, scoring='neg_mean_absolute_error')
         errors[name+"_error"] = "{:.2f} (+/- {:.2f})".format(scores.mean() / 60 / 60, scores.std() / 60 / 60 * 2)
 
-    # Run a simple linear regression using all the predictions as meta-features
+    # Run a simple linear regression using all the 1st-level predictions as meta-features
     stacker = LinearRegression()
     prediction_cols = [e[0] for e in estimators if e[2]]
     stacker.fit(training[prediction_cols], y_train)
