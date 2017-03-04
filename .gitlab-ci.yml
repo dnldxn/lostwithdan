@@ -9,7 +9,7 @@ prepare:
   artifacts:
     paths:
     - _data/stats.json
-    - img/googlemap.png
+    - assets/images/googlemap.png
 
 pages:
   stage: deploy

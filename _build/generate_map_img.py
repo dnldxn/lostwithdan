@@ -111,11 +111,11 @@ if __name__ == "__main__":
     # file locations
     wd = os.path.dirname(__file__)
     locationsPath = os.path.join(wd, "../_data/atdb.092116023143.ALL.csv")
-    img_out_path_top_left = os.path.join(wd, "../img/googlemap_topleft.png")
-    img_out_path_top_right = os.path.join(wd, "../img/googlemap_topright.png")
-    img_out_path_bottom_right = os.path.join(wd, "../img/googlemap_bottomright.png")
-    img_out_path_bottom_left = os.path.join(wd, "../img/googlemap_bottomleft.png")
-    img_out_path = os.path.join(wd, "../img/googlemap.png")
+    img_out_path_top_left = os.path.join(wd, "../assets/images/googlemap_topleft.png")
+    img_out_path_top_right = os.path.join(wd, "../assets/images/googlemap_topright.png")
+    img_out_path_bottom_right = os.path.join(wd, "../assets/images/googlemap_bottomright.png")
+    img_out_path_bottom_left = os.path.join(wd, "../assets/images/googlemap_bottomleft.png")
+    img_out_path = os.path.join(wd, "../assets/images/googlemap.png")
 
     # read in location data to generate path and current location icon
     df = pd.read_csv(locationsPath, usecols=[TYPE_COL, LAT_COL, LONG_COL, DATE_COL])
