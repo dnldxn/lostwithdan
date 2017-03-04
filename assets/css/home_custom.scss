@@ -18,14 +18,10 @@
 }
 
 .page__hero-image {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  margin-top: -20px;  /* Crop extra space on top */
-  margin-bottom: -35px;  /* Crop Google Maps logo from bottom */
+  max-width: 1200px;
   min-width: 600px;
-  max-height: 1200px;
-  max-width: 1900px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 
