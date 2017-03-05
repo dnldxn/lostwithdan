@@ -98,9 +98,9 @@ if __name__ == "__main__":
     DATE_COL = 'dt_reached'
 
     # define the center and the offsets for the 4 quadrants
-    CENTER = (40, -76)
-    LATITUDE_OFFSET = 3.35  # vertical
-    LONGITUDE_OFFSET = 7.027  # horizontal
+    CENTER = (40.27, -76.1)
+    LATITUDE_OFFSET = 3.33  # vertical
+    LONGITUDE_OFFSET = 7.03  # horizontal
 
     # calculate the center of each of the four quadrants
     TOP_LEFT =      (CENTER[0] + LATITUDE_OFFSET, CENTER[1] - LONGITUDE_OFFSET)
