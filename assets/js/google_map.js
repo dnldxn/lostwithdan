@@ -7,10 +7,11 @@
 var map;
 
 function initMap() {
+    var current_location = new google.maps.LatLng({{ current_lat }}, {{ current_lon }});
 
     /* define map center, zoom level, and basic options */
     map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: { lat: {{current_lat}}, lng: {{current_lon}} },
+        center: current_location,
         zoom: 8,
         mapTypeControl: true,
             mapTypeControlOptions: {
@@ -69,11 +70,11 @@ function initMap() {
 
     /* Add a point for the current location (where am I now) */
     var currentLocation = new google.maps.Marker({
-        position: { lat: {{current_lat}}, lng: {{current_lon}} },
+        position: current_location,
         map: map,
         title: 'Current Location!',
         icon: {
-            url: "/img/hiker_med.png",
+            url: "/assets/images/hiker_med.png",
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(25, 40),   /* just a little up from the bottom center (the image is 50 x 62) */
         },
