@@ -13,42 +13,48 @@ from generate_stats import start_date
 class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        types = ['FEATURE', 'SHELTER', 'SHELTER', 'SHELTER', 'SHELTER', 'FEATURE']
-        lats = [34.62673, 34.6533256, 36.5810973, 39.227215, 45.8815981, 45.904362]
-        longs = [-84.193656, -84.0342084, -81.902055, -77.7792448, -68.995052, -68.921392]
-        names = ['Springer Mt', 'Gooch Mountain Shelter', 'Abingdon Gap Shelter', 'David Lesser Shelter',
-                 'The Birches Shelters', 'Mt Katahdin']
-        states = ['GA', 'GA', 'NC', 'VA', 'ME', 'ME']
-        to_spgrs = [0, 15.8, 458.8, 1014.4, 2184.6, 2189.8]
-        elevs = [3782, 2789, 3780, 1421, 1089, 5268]
 
-        df = pd.DataFrame({'type': types, 'lat': lats, 'lon': longs, 'name': names, 'state': states,
-                                'to_spgr': to_spgrs, 'elev': elevs})
+        labels = ['type', 'lat', 'lon', 'name', 'state', 'to_spgr', 'elev', 'dt_reached']
+        checkpoints = [
+            ('FEATURE', 34.557789,  -84.249489,  'Amicalola Falls SP',   'GA', -8.8,   1800, '2017-03-08T08:01:00'),
+            ('FEATURE', 34.62673,   -84.193656,  'Springer Mt',          'GA', 0,      3782, '2017-03-08T13:02:00'),
+
+            ('FEATURE', 34.62673,   -84.193656,  'Springer Mt',          'GA', 0,      3782, '2017-03-09T07:03:00'),
+            ('FEATURE', 34.6659577, -84.1363386, 'Hawk Mt Shelter',      'GA', 8.1,    3194, '2017-03-09T10:30:00'),
+            ('SHELTER', 34.6533256, -84.0342084, 'Gooch Mt Shelter',     'GA', 15.8,   2789, '2017-03-09T13:04:00'),
+
+            ('SHELTER', 39.227215,  -77.7792448, 'David Lesser Shelter', 'VA', 1014.4, 1421, '2017-03-15T07:03:00'),
+            ('FEATURE', 39.3165,    -77.7558,    'Harpers Ferry, WV',    'VA', 1023.7, 274,  '2017-03-15T10:43:00'),
+
+            ('SHELTER', 45.8815981, -68.995052,  'The Birches Shelters', 'ME', 2184.6, 1089, '2017-08-25T12:05:00'),
+            ('FEATURE', 45.904362,  -68.921392,  'Mt Katahdin',          'ME', 2189.8, 5268, '2017-08-25T14:06:00')
+        ]
+
+        df = pd.DataFrame.from_records(checkpoints, columns=labels)
+        df['dt_reached'] = pd.to_datetime(df['dt_reached'])
 
         cls.normal_df = df.copy()
-        dt_reached = ['2017-03-08T08:01:00', '2017-03-08T16:02:00', '2017-03-15T07:03:00', '2017-03-15T17:04:00',
-                      pd.NaT, pd.NaT]
-        cls.normal_df['dt_reached'] = pd.to_datetime(dt_reached)
+        complete = cls.normal_df['dt_reached'].ix[:4]
+        incomplete = pd.Series([pd.NaT for i in range(len(df) - 5)])
+        cls.normal_df['dt_reached'] = complete.append(incomplete, ignore_index=True)
 
         cls.complete_df = df.copy()
-        dt_reached = ['2017-03-08T08:01:00', '2017-03-08T16:02:00', '2017-03-15T07:03:00', '2017-03-15T17:04:00',
-                      '2017-08-15T12:05:00', '2017-08-15T14:06:00']
-        cls.complete_df['dt_reached'] = pd.to_datetime(dt_reached)
 
         cls.empty_df = df.copy()
-        dt_reached = [pd.NaT, pd.NaT, pd.NaT, pd.NaT, pd.NaT, pd.NaT]
-        cls.empty_df['dt_reached'] = pd.to_datetime(dt_reached)
+        cls.empty_df['dt_reached'] = [pd.NaT for i in range(len(df))]
 
+        assert (len(df) == len(cls.normal_df) == len(cls.complete_df) == len(cls.empty_df))
 
 class TestCurrentLocation(Test):
     def test_normal_location(self):
+        self.maxDiff = None
         # Should output the last known location and time
         bak = self.normal_df.copy()
 
         loc = current_location(self.normal_df)
         expected = {'current_location':
-                    {'lon': '-77.7792', 'dt_reached': '2017-03-15', 'lat': '39.2272',
-                     'name': 'David Lesser Shelter, VA', 'miles_hiked': '1014.4', 'miles_remaining': '1175.4'}}
+                    {'lat': '34.6533', 'lon': '-84.0342', 'dt_reached': '2017-03-09', 'name': 'Gooch Mt Shelter, GA',
+                     'miles_hiked': '24.6', 'miles_remaining': '2174.0'}}
         self.assertDictEqual(expected, loc)
 
         # make sure we didn't alter the original data
@@ -60,8 +66,8 @@ class TestCurrentLocation(Test):
 
         loc = current_location(self.empty_df)
         expected = {'current_location':
-                    {"lon": '-84.1937', 'dt_reached': '2017-03-13', 'lat': '34.6267', 'name': 'Springer Mt, GA',
-                     'miles_hiked': '0.0', 'miles_remaining': '2189.8'}}
+                    {'lat': '34.5578', 'lon': '-84.2495', 'dt_reached': '2017-03-13', 'name': 'Amicalola Falls SP, GA',
+                     'miles_hiked': '0.0', 'miles_remaining': '2198.6'}}
 
         self.assertDictEqual(expected, loc)
 
@@ -74,8 +80,8 @@ class TestCurrentLocation(Test):
 
         loc = current_location(self.complete_df)
         expected = {'current_location':
-                        {'lon': '-68.9214', 'dt_reached': '2017-08-15', 'lat': '45.9044', 'name': 'Mt Katahdin, ME',
-                         'miles_hiked': '2189.8', 'miles_remaining': '0.0'}}
+                        {'lat': '45.9044', 'lon': '-68.9214', 'dt_reached': '2017-08-25',  'name': 'Mt Katahdin, ME',
+                         'miles_hiked': '2198.6', 'miles_remaining': '0.0'}}
         self.assertDictEqual(expected, loc)
 
         # make sure we didn't alter the original data
@@ -88,7 +94,7 @@ class TestDaysOnTrail(Test):
         bak = self.normal_df.copy()
 
         dat = days_on_trail(self.normal_df)
-        expected = {'days_on_trail': 8}
+        expected = {'days_on_trail': 2}
         self.assertDictEqual(expected, dat)
 
         # make sure we didn't alter the original data
@@ -99,7 +105,7 @@ class TestDaysOnTrail(Test):
         bak = self.complete_df.copy()
 
         dat = days_on_trail(self.complete_df)
-        expected = {'days_on_trail': 161}
+        expected = {'days_on_trail': 171}
         self.assertDictEqual(expected, dat)
 
         # make sure we didn't alter the original data
@@ -123,7 +129,7 @@ class TestMilesHikedPerDay(Test):
         bak = self.normal_df.copy()
 
         mpd = miles_hiked_per_day(self.normal_df)
-        expected = {'miles_per_day': {"2017-03-08": '15.8', "2017-03-15": '555.6'}}
+        expected = {'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8'}}
         self.assertDictEqual(expected, mpd)
 
         # make sure we didn't alter the original data
@@ -145,7 +151,7 @@ class TestMilesHikedPerDay(Test):
         bak = self.complete_df.copy()
 
         mpd = miles_hiked_per_day(self.complete_df)
-        expected = {'miles_per_day': {"2017-03-08": '15.8', "2017-03-15": '555.6', "2017-08-15": '5.2'}}
+        expected = {'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8', "2017-03-15": '9.3', "2017-08-25": '5.2'}}
         self.assertDictEqual(expected, mpd)
 
         # make sure we didn't alter the original data

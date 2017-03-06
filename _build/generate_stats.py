@@ -36,7 +36,7 @@ def get_completed(df):
 
 def current_location(df):
     miles_hiked = 0
-    miles_remaining = df["to_spgr"].iloc[-1]
+    miles_remaining = df["to_spgr"].iloc[-1] - df["to_spgr"].iloc[0]  # since the first checkpoint could have negative mileage (approach trail)
 
     df = df.copy()  # work on a copy
 
@@ -53,7 +53,7 @@ def current_location(df):
     if len(completed) > 0:
         completed[DATE_COL] = completed[DATE_COL].dt.strftime('%Y-%m-%d')
         last_completed = completed.iloc[-1]
-        miles_hiked = last_completed[TO_SPRINGER_COL]
+        miles_hiked = last_completed[TO_SPRINGER_COL] - df["to_spgr"].iloc[0]
         miles_remaining = miles_remaining - miles_hiked
     else:
         last_completed = df.iloc[0]
