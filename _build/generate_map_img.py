@@ -20,8 +20,7 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
 
     # read in locations from csv file
     shelters = checkpoints[checkpoints[TYPE_COL].isin(['SHELTER', 'HUT'])]
-    shelters.dropna(inplace=True)
-    shelters.drop_duplicates(inplace=True)
+    shelters = shelters.dropna().drop_duplicates()
 
     # append the lat-long of each shelter to the url path
     path = 'path=weight:4'

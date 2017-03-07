@@ -185,15 +185,16 @@ def predict_completion(df):
         estimator.fit(X_train, y_train)
         if include_in_prediction:
             predict[name] = estimator.predict(X_predict)
+            training[name] = estimator.predict(X_train)
 
         scores = cross_val_score(estimator, X_train, y_train, cv=num_folds, scoring='neg_mean_absolute_error')
         errors[name+"_error"] = "{:.2f} (+/- {:.2f})".format(scores.mean() / 60 / 60, scores.std() / 60 / 60 * 2)
 
     # Run a simple linear regression using all the 1st-level predictions as meta-features
     stacker = LinearRegression()
-    prediction_cols = [e[0] for e in estimators if e[2]]
-    stacker.fit(training[prediction_cols], y_train)
-    predictions = stacker.predict(predict[prediction_cols])
+    estimator_prediction_cols = [e[0] for e in estimators if e[2]]
+    stacker.fit(training[estimator_prediction_cols], y_train)
+    predictions = stacker.predict(predict[estimator_prediction_cols])
 
     # Sum the predictions for all the remaining segments.  notice we add a 10% buffer to the estimate.
     # Also this assumes 8 hours of hiking per day
