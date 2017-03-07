@@ -12,7 +12,7 @@ function drawChart() {
     data.addColumn('date', '');
     data.addColumn('number', 'Miles');
     data.addRows([
-        {% for day in site.data.stats.miles_per_day | sort %}
+        {% for day in site.data.stats.miles_per_day %}
             [ new Date('{{ day[0] }}'), {{ day[1] }}],
         {% endfor %}
     ]);
@@ -39,6 +39,9 @@ function drawChart() {
 
     /* Set chart options */
     var options = {
+        bar: {
+            groupWidth: '100%'
+        },
         title: 'Pace (Miles)',
         hAxis: {
             format: 'MMM d',
@@ -51,8 +54,8 @@ function drawChart() {
         legend: { position: 'none' },
         lineWidth: 4,
         series: {
-            0: {type: 'bars', lineWidth: 100 },
-            1: {type: 'line', lineDashStyle: [8, 4]}
+            0: {type: 'bars'},
+            1: {type: 'line'}
         },
         titleTextStyle: {
             color: '#5b5f63'  /* soften the text from black to light grey */
