@@ -7,6 +7,8 @@ main:
     url: /map/
   - title: "Gear"
     url: /gear/
+  - title: "Stats"
+    url: /stats/
   - title: "Send Me a Package!"
     url: /package/
   - title: "Contact"
