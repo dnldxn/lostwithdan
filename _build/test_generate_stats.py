@@ -47,7 +47,6 @@ class Test(unittest.TestCase):
 
 class TestCurrentLocation(Test):
     def test_normal_location(self):
-        self.maxDiff = None
         # Should output the last known location and time
         bak = self.normal_df.copy()
 

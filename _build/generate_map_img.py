@@ -1,16 +1,11 @@
+import constants
+
 import os
-import pandas as pd
 from urllib.request import urlopen
 from PIL import Image
 
 
 def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
-    # constants
-    TYPE_COL = 'type'
-    LAT_COL = 'lat'
-    LONG_COL = 'lon'
-    DATE_COL = 'dt_reached'
-
     # map options
     baseurl = "https://maps.googleapis.com/maps/api/staticmap?"
     options = "center=" + str(center_lat) + "," + str(center_long) + "&size=640x420&zoom=6&scale=2"
@@ -19,24 +14,26 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
     api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
 
     # read in locations from csv file
-    shelters = checkpoints[checkpoints[TYPE_COL].isin(['SHELTER', 'HUT'])]
-    shelters = shelters.dropna(subset=[LAT_COL, LONG_COL]).drop_duplicates()
+    shelters = checkpoints[checkpoints[constants.TYPE_COL].isin(['SHELTER', 'HUT'])]
+    shelters = shelters.dropna(subset=[constants.LAT_COL, constants.LONG_COL]).drop_duplicates()
 
     # append the lat-long of each shelter to the url path
     path = 'path=weight:4'
     for index, row in shelters.iterrows():
-        lat = "{:.4f}".format(row[LAT_COL])
-        long = "{:.4f}".format(row[LONG_COL])
+        lat = "{:.4f}".format(row[constants.LAT_COL])
+        long = "{:.4f}".format(row[constants.LONG_COL])
 
         path = path + '|' + lat + ',' + long
 
     # get the last know current location
-    completed = checkpoints[checkpoints[DATE_COL].notnull()][[LAT_COL, LONG_COL]]
-    last_completed = checkpoints[[LAT_COL, LONG_COL]].iloc[0]   # by default, use first location if nothing is completed
+    completed = checkpoints[checkpoints[constants.DATE_COL].notnull()][[constants.LAT_COL, constants.LONG_COL]]
+    last_completed = checkpoints[[constants.LAT_COL, constants.LONG_COL]].iloc[0]   # by default, use first location if nothing is completed
     if len(completed) > 0:
         last_completed = completed.iloc[-1]
 
-    current_location_marker = current_location_marker + '|' + str(last_completed[LAT_COL]) + ',' + str(last_completed[LONG_COL])
+    current_location_marker = current_location_marker + '|' + \
+                              str(last_completed[constants.LAT_COL]) + ',' + \
+                              str(last_completed[constants.LONG_COL])
 
     # build final url
     url = baseurl + options + '&' + current_location_marker + '&' + style + '&' + path + '&' + api_key
@@ -92,12 +89,6 @@ def combine_images(img_path_out, top_left, top_right, bottom_right, bottom_left)
 
 if __name__ == "__main__":
 
-    # constants
-    TYPE_COL = 'type'
-    LAT_COL = 'lat'
-    LONG_COL = 'lon'
-    DATE_COL = 'dt_reached'
-
     # define the center and the offsets for the 4 quadrants
     CENTER = (40.27, -76.1)
     LATITUDE_OFFSET = 3.33  # vertical
@@ -110,16 +101,13 @@ if __name__ == "__main__":
     BOTTOM_LEFT =   (CENTER[0] - LATITUDE_OFFSET, CENTER[1] - LONGITUDE_OFFSET)
 
     # file locations
-    wd = os.path.dirname(__file__)
-    locationsPath = os.path.join(wd, "../_data/atdb.092116023143.ALL.csv")
-    img_out_path_top_left = os.path.join(wd, "../assets/images/googlemap_topleft.png")
-    img_out_path_top_right = os.path.join(wd, "../assets/images/googlemap_topright.png")
-    img_out_path_bottom_right = os.path.join(wd, "../assets/images/googlemap_bottomright.png")
-    img_out_path_bottom_left = os.path.join(wd, "../assets/images/googlemap_bottomleft.png")
-    img_out_path = os.path.join(wd, "../assets/images/googlemap.png")
+    img_out_path_top_left = os.path.join(constants.wd, "../assets/images/googlemap_topleft.png")
+    img_out_path_top_right = os.path.join(constants.wd, "../assets/images/googlemap_topright.png")
+    img_out_path_bottom_right = os.path.join(constants.wd, "../assets/images/googlemap_bottomright.png")
+    img_out_path_bottom_left = os.path.join(constants.wd, "../assets/images/googlemap_bottomleft.png")
 
     # read in location data to generate path and current location icon
-    df = pd.read_csv(locationsPath, usecols=[TYPE_COL, LAT_COL, LONG_COL, DATE_COL])
+    df = constants.read_poi_file(usecols=[constants.TYPE_COL, constants.LAT_COL, constants.LONG_COL, constants.DATE_COL])
 
     # Use the url to download the image and save in the img folder
     url = generate_url(df, TOP_LEFT[0], TOP_LEFT[1], LATITUDE_OFFSET, LONGITUDE_OFFSET)
@@ -147,4 +135,5 @@ if __name__ == "__main__":
         f.write(image)
 
     # combine images and save to disk
-    combine_images(img_out_path, img_out_path_top_left, img_out_path_top_right, img_out_path_bottom_right, img_out_path_bottom_left)
+    combine_images(constants.staticMapImgPath, img_out_path_top_left, img_out_path_top_right,
+                   img_out_path_bottom_right, img_out_path_bottom_left)

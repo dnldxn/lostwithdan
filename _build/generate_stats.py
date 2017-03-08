@@ -1,4 +1,5 @@
-import os
+import constants
+
 import pandas as pd
 import json
 from datetime import datetime
@@ -12,73 +13,54 @@ from sklearn.ensemble import AdaBoostRegressor
 from sklearn.model_selection import cross_val_score
 
 
-# Define input and output file locations
-fileInPath = os.path.join(os.path.dirname(__file__), '../_data/atdb.092116023143.ALL.csv')
-fileOutPath = os.path.join(os.path.dirname(__file__), '../_data/stats.json')
-
-# Constants
-TYPE_COL = 'type'
-NAME_COL = 'name'
-STATE_COL = 'state'
-LAT_COL = 'lat'
-LONG_COL = 'lon'
-DATE_COL = 'dt_reached'
-TO_SPRINGER_COL = 'to_spgr'
-ELEV_COL = 'elev'
-
-ESTIMATED_START_DT = '2017-03-13'
-ESTIMATED_FINISH_DT = '2017-09-01'
-
-
-def get_completed(df):
-    return df[df[DATE_COL].notnull()]
-
-
 def current_location(df):
-    miles_hiked = 0
-    miles_remaining = df["to_spgr"].iloc[-1] - df["to_spgr"].iloc[0]  # since the first checkpoint could have negative mileage (approach trail)
-
-    df = df.copy()  # work on a copy
-
-    # Concat name and state
-    df[NAME_COL] = df[NAME_COL] + ', ' + df[STATE_COL]
-
-    # Fix rounding issue with lat longs
-    df[LAT_COL] = df[LAT_COL].apply(lambda x: "{:.4f}".format(x))
-    df[LONG_COL] = df[LONG_COL].apply(lambda x: "{:.4f}".format(x))
-
     # Find the completed sections
-    completed = get_completed(df)[[NAME_COL, LAT_COL, LONG_COL, TO_SPRINGER_COL, DATE_COL ]]
+    completed = constants.get_completed(df)
 
+    # Find the last completed row, or if no completed sections use the default values
     if len(completed) > 0:
-        completed[DATE_COL] = completed[DATE_COL].dt.strftime('%Y-%m-%d')
+        completed[constants.DATE_COL] = completed[constants.DATE_COL].dt.strftime('%Y-%m-%d')
         last_completed = completed.iloc[-1]
-        miles_hiked = last_completed[TO_SPRINGER_COL] - df["to_spgr"].iloc[0]
-        miles_remaining = miles_remaining - miles_hiked
     else:
         last_completed = df.iloc[0]
-        last_completed.set_value(DATE_COL, ESTIMATED_START_DT)
+        last_completed[constants.DATE_COL] = constants.ESTIMATED_START_DT
 
-    last_completed = last_completed[[NAME_COL, LAT_COL, LONG_COL, DATE_COL]]
+    # Concat name and state
+    last_completed[constants.NAME_COL] = last_completed[constants.NAME_COL] + ', ' + last_completed[constants.STATE_COL]
+
+    # Calculate mileage
+    first_mileage = df[constants.TO_SPRINGER_COL].iloc[0]  # this is a negative value, because of the approach trail
+    last_mileage = df[constants.TO_SPRINGER_COL].iloc[-1]
+    miles_hiked = last_completed[constants.TO_SPRINGER_COL] - first_mileage
+    miles_remaining = last_mileage - first_mileage - miles_hiked
     last_completed['miles_hiked'] = "{:.1f}".format(miles_hiked)
     last_completed['miles_remaining'] = "{:.1f}".format(miles_remaining)
+
+    # Fix rounding issue with lat longs
+    last_completed[constants.LAT_COL] = "{:.4f}".format(last_completed[constants.LAT_COL])
+    last_completed[constants.LONG_COL] = "{:.4f}".format(last_completed[constants.LONG_COL])
+
+    # Select columns to include in output
+    last_completed = last_completed[[constants.NAME_COL, constants.LAT_COL, constants.LONG_COL, constants.DATE_COL,
+                                     'miles_hiked', 'miles_remaining']]
+
     return {'current_location': last_completed.to_dict()}
 
 
 def miles_hiked_per_day(df):
-    completed = get_completed(df)[[DATE_COL, TO_SPRINGER_COL]]
-    completed[DATE_COL] = completed[DATE_COL].dt.strftime('%Y-%m-%d')
+    completed = constants.get_completed(df)[[constants.DATE_COL, constants.TO_SPRINGER_COL]]
+    completed[constants.DATE_COL] = completed[constants.DATE_COL].dt.strftime('%Y-%m-%d')
 
     # Need to shift the values, since the last checkpoint of each day should be the first checkpoint of the next day
-    completed['to_spgr_shifted'] = completed[TO_SPRINGER_COL].shift(1)
-    completed['dt_reached_shifted'] = completed[DATE_COL].shift(1)
+    completed['to_spgr_shifted'] = completed[constants.TO_SPRINGER_COL].shift(1)
+    completed['dt_reached_shifted'] = completed[constants.DATE_COL].shift(1)
 
     # Exclude calculating the overnight duration by filtering where the dates are different
     completed = completed[completed['dt_reached'] == completed['dt_reached_shifted']]
 
     # Group by day
-    f = {TO_SPRINGER_COL: 'last', 'to_spgr_shifted': 'first'}
-    miles_per_day = completed.groupby(DATE_COL).agg(f)
+    f = {constants.TO_SPRINGER_COL: 'last', 'to_spgr_shifted': 'first'}
+    miles_per_day = completed.groupby(constants.DATE_COL).agg(f)
     miles_per_day['miles'] = miles_per_day.to_spgr - miles_per_day.to_spgr_shifted
 
     # Fix rounding issue by converting each mileage value into a string
@@ -88,12 +70,12 @@ def miles_hiked_per_day(df):
 
 
 def start_date(df):
-    dt = datetime.strptime(ESTIMATED_START_DT, '%Y-%m-%d')
+    dt = datetime.strptime(constants.ESTIMATED_START_DT, '%Y-%m-%d')
 
-    completed = get_completed(df)
+    completed = constants.get_completed(df)
 
     if len(completed) > 0:
-        dt = df.iloc[0][DATE_COL]
+        dt = df.iloc[0][constants.DATE_COL]
 
     # Output is formatted like "Mar 3, 2017"
     return {'start_date': "{d:%b} {d.day}, {d.year}".format(d=dt)}
@@ -102,7 +84,7 @@ def start_date(df):
 def days_on_trail(df):
     days = 0
 
-    completed = get_completed(df)[DATE_COL]
+    completed = constants.get_completed(df)[constants.DATE_COL]
 
     if len(completed) > 0:
         start = completed.iloc[0].date()
@@ -113,34 +95,34 @@ def days_on_trail(df):
 
 
 def predict_completion(df):
-    df = df[df[TYPE_COL].isin(['FEATURE', 'SHELTER', 'HUT'])]
-    df = df[[TO_SPRINGER_COL, ELEV_COL, DATE_COL]]
+    df = df[df[constants.TYPE_COL].isin(['FEATURE', 'SHELTER', 'HUT'])]
+    df = df[[constants.TO_SPRINGER_COL, constants.ELEV_COL, constants.DATE_COL]]
     df['dt_reached_dt'] = df['dt_reached'].dt.date
 
     # Make a working copy of the data, and shift the rows so diffs between rows can be computed
     shifted = df.copy()
-    shifted['to_spgr_shifted'] = shifted[TO_SPRINGER_COL].shift(1)
-    shifted['elev_shifted'] = shifted[ELEV_COL].shift(1)
-    shifted['dt_reached_shifted'] = shifted[DATE_COL].shift(1)
+    shifted['to_spgr_shifted'] = shifted[constants.TO_SPRINGER_COL].shift(1)
+    shifted['elev_shifted'] = shifted[constants.ELEV_COL].shift(1)
+    shifted['dt_reached_shifted'] = shifted[constants.DATE_COL].shift(1)
     shifted['dt_reached_dt_shifted'] = shifted['dt_reached_dt'].shift(1)
 
     # Remove the first row, since there is no diff between the first row and before it
     shifted = shifted.ix[1:]
 
     # Compute the diffs
-    shifted['elev_diff'] = shifted[ELEV_COL] - shifted['elev_shifted']
-    shifted['mileage'] = shifted[TO_SPRINGER_COL] - shifted['to_spgr_shifted']
-    shifted['time_diff'] = shifted[DATE_COL] - shifted['dt_reached_shifted']
+    shifted['elev_diff'] = shifted[constants.ELEV_COL] - shifted['elev_shifted']
+    shifted['mileage'] = shifted[constants.TO_SPRINGER_COL] - shifted['to_spgr_shifted']
+    shifted['time_diff'] = shifted[constants.DATE_COL] - shifted['dt_reached_shifted']
 
     # Use rows that have completed dates to train the model, use the rest for prediction
     # Notice we exclude calculating the overnight duration by filtering out where the dates are different
     training = shifted[shifted['dt_reached_dt'] == shifted['dt_reached_dt_shifted']]
     training = training[['elev_diff', 'mileage', 'time_diff']]
-    predict = shifted[pd.isnull(shifted[DATE_COL])][['elev_diff', 'mileage']]
+    predict = shifted[pd.isnull(shifted[constants.DATE_COL])][['elev_diff', 'mileage']]
 
     # If not enough training data, output the manually estimated finish date
     if len(training) < 6:
-        estimated = datetime.strptime(ESTIMATED_FINISH_DT, '%Y-%m-%d')
+        estimated = datetime.strptime(constants.ESTIMATED_FINISH_DT, '%Y-%m-%d')
         formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=estimated)
         return {'estimated_completion': {'date': formatted_dt}}
 
@@ -203,8 +185,8 @@ def predict_completion(df):
 
     # Average the predicted finish and estimated finish.  This ensures the prediction doesn't get too crazy,
     # especially in the first few weeks when there is little training data.
-    predicted_finish = checkpoints.ix[0, DATE_COL] + timedelta(days=predicted_time_to_finish_days)
-    estimated_finish = datetime.strptime(ESTIMATED_FINISH_DT , '%Y-%m-%d')
+    predicted_finish = checkpoints.ix[0, constants.DATE_COL] + timedelta(days=predicted_time_to_finish_days)
+    estimated_finish = datetime.strptime(constants.ESTIMATED_FINISH_DT , '%Y-%m-%d')
 
     final_estimate = min(estimated_finish, predicted_finish) + abs(estimated_finish - predicted_finish)/2
 
@@ -216,7 +198,7 @@ def predict_completion(df):
 
 
 if __name__ == "__main__":
-    checkpoints = pd.read_csv(fileInPath, parse_dates=[DATE_COL], infer_datetime_format=True)
+    checkpoints = constants.read_poi_file()
 
     cl = current_location(checkpoints)
     mpd = miles_hiked_per_day(checkpoints)
@@ -225,5 +207,5 @@ if __name__ == "__main__":
     pc = predict_completion(checkpoints)
 
     # Write json file
-    with open(fileOutPath, 'w') as outfile:
+    with open(constants.statsFilePath, 'w') as outfile:
         json.dump({**cl, **mpd, **sd, **dat, **pc}, outfile)
