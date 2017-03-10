@@ -3,3 +3,4 @@ pandas
 scipy
 sklearn
 Pillow
+python-google-places
