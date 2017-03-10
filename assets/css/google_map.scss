@@ -44,3 +44,23 @@ body {
         padding-bottom: 1em;
     }
 }
+
+
+/*
+ * Map Controls Styles
+ *
+ * Styles for the custom controls on the Map (toggle post offices, reset location, etc)
+ */
+
+#resetLocationButton {
+    background-color: rgb(255, 255, 255);
+    font-size: 1.2em;
+    margin: 10px;
+    padding: 11px;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+    text-align: left;
+}

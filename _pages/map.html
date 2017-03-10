@@ -4,13 +4,11 @@ layout: default
 custom_css: google_map
 ---
 
+<div id="resetLocationButton">Reset Map</div>
+
 <div class="box">
     <div id="googleMap"></div>
 </div>
 
-<script async type="text/javascript" src="/assets/js/google_map.js">
-</script>
-
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI&callback=initMap">
-</script>
+<script src="/assets/js/google_map.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI&callback=initMap&libraries=places"></script>

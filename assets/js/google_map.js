@@ -5,14 +5,16 @@
 {% assign current_lon = site.data.stats.current_location.lon %}
 
 var map;
+var infowindow;
 
 function initMap() {
     var current_location = new google.maps.LatLng({{ current_lat }}, {{ current_lon }});
+    var zoomLevel = 8
 
     /* define map center, zoom level, and basic options */
     map = new google.maps.Map(document.getElementById('googleMap'), {
         center: current_location,
-        zoom: 8,
+        zoom: zoomLevel,
         mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -25,10 +27,8 @@ function initMap() {
     /* Load coordinates from CSV file and create POI array */
     var coordinates = [
         {% for p in site.data.atdb092116023143ALL %}
-            {% if p.type == 'SHELTER' or p.type == 'FEATURE' or p.type == 'HUT' %}
-                {% if p.lat and p.lon %}
-                    { name: "{{p.name}}", position: new google.maps.LatLng( {{p.lat}}, {{p.lon}} ) },
-                {% endif %}
+            {% if p.lat and p.lon %}
+                { nm: "{{p.name}}", loc: {lat: {{p.lat}}, lng: {{p.lon}}} },
             {% endif %}
         {% endfor %}
     ]
@@ -48,14 +48,14 @@ function initMap() {
         var c = coordinates[i]
         
         marker = new google.maps.Marker({
-            position: c.position,
+            position: c.loc,
             map: map,
             icon: smallCircle,
-            title: c.name
+            title: c.nm
         });
 
         /* Add the POI to a list that we use to draw the line later */
-        latLngArray.push(c.position);
+        latLngArray.push(c.loc);
     }
 
     /* Draw a line over all of the points */
@@ -76,8 +76,39 @@ function initMap() {
         icon: {
             url: "/assets/images/hiker_med.png",
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(25, 40),   /* just a little up from the bottom center (the image is 50 x 62) */
+            anchor: new google.maps.Point(25, 40)   /* just a little up from the bottom center (the image is 50 x 62) */
         },
         animation: google.maps.Animation.DROP
     });
+
+    /* Add the list of Post Offices (if any) that have been identified by the build process */
+    infowindow = new google.maps.InfoWindow();
+    var post_offices = {{ site.data.post_offices | jsonify }}
+    
+    for (var i = 0; i < post_offices.length; i++) {
+        var po = post_offices[i]
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: {lat: parseFloat(po.lat), lng: parseFloat(po.lng)},
+            icon: {
+                url: 'https://maps.gstatic.com/mapfiles/place_api/icons/post_office-71.png',
+                scaledSize: new google.maps.Size(20, 20)
+            },
+            content: "<b><a href='" + po.url + "' target='_blank'>" + po.nm + "</a></b><br />" + po.addr + "<br />" + po.phone
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(this.content);
+            infowindow.open(map, this);
+        });
+    }
+
+    /* Add button to reset the view to my current location */
+    var resetLocationButton = document.getElementById('resetLocationButton')
+    resetLocationButton.addEventListener('click', function() {
+        map.setCenter(current_location);
+        map.setZoom(zoomLevel)
+    });
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(resetLocationButton);
 }

@@ -11,7 +11,7 @@ def generate_url(checkpoints, center_lat, center_long, offset_lat, offset_long):
     options = "center=" + str(center_lat) + "," + str(center_long) + "&size=640x420&zoom=6&scale=2"
     current_location_marker = "markers=scale:2|anchor:center|icon:https://goo.gl/N7pagH"
     style = "style=feature:landscape|lightness:40&style=feature:road|visibility:simplified"
-    api_key = "key=AIzaSyCpNlAW16ash3_DakQeeIwzPs5KxTz_lmI"
+    api_key = "key=" + constants.GOOGLE_API_KEY
 
     # read in locations from csv file
     shelters = checkpoints[checkpoints[constants.TYPE_COL].isin(['SHELTER', 'HUT'])]
