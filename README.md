@@ -37,10 +37,9 @@ docker run --name python --rm -it ^
 python:3.6 ^
 /bin/bash
 
-pip install -r _build/requirements.txt
-python -m unittest discover -s _build/
-python _build/generate_stats.py
-python _build/generate_map_img.py
+cd src
+
+# Copy instructions in Gitlab CI Yml file
 ```
 
 # Docker Notebook
