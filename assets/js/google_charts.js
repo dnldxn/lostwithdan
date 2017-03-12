@@ -1,4 +1,5 @@
 ---
+# This file needs a front-matter section for Jekyll to it to the output
 ---
 
 /* Load chart packages and set callback function to run when the Visualization API is loaded */

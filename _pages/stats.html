@@ -5,7 +5,40 @@ title: Stats
 custom_css: stats
 ---
 
-<h2>Coming Soon</h2>
+{% assign hiked = site.data.stats.current_location.miles_hiked %}
+{% assign remaining = site.data.stats.current_location.miles_remaining %}
+{% assign tot_miles = hiked | plus: remaining %}
+{% assign percent_complete =  hiked | divided_by: tot_miles | times: 100 %}
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script async type="text/javascript" src="/assets/js/stats.js"></script>
+Sorry, I ran out of time to make this page pretty.  But it contains useful information, so I kept it.  Maybe I'll go back at some point and make it nicer to look at.
+
+<div class="statsContainer">
+    <div class="statsHeader">Pace</div>
+
+    <div class="statsBox">
+        <table>
+            <tr><td>Walked</td><td>{{ hiked }} miles</td></tr>
+            <tr><td>Remaining</td><td>{{ remaining }} miles</td></tr>
+            <tr><td>Complete</td><td>{{ percent_complete | round: 0 }}%</td></tr>
+        </table>
+    </div>
+
+    <div class="statsBox">
+        <table>
+            <tr><td>Avg Miles per Day</td><td>12.2 miles</td></tr>
+            <tr><td>Number of Zeros</td><td>3</td></tr>
+        </table>
+    </div>
+
+
+    <div class="statsHeader">Finances</div>
+
+    <div class="statsBox">
+        <div id="total_spent"> Spent: $0 </div>
+        <div id="finance_bars"></div>
+    </div>
+
+</div> <!--statsContainer-->
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/assets/js/stats.js"></script>

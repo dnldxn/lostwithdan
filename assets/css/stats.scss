@@ -1,0 +1,59 @@
+---
+# This file needs a front-matter section for Jekyll to it to the output
+---
+
+.statsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-between; /* Safari */
+    justify-content: space-between;
+}
+
+.statsHeader {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100%;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.statsBox {
+    -webkit-flex-basis: 200px; /* Safari */
+    flex-basis: 200px;
+    -webkit-flex-shrink: 0; /* Safari */
+    flex-shrink: 0;
+
+    flex-grow: 1;
+    max-width: 600px;
+    line-height: 2.0;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    table {
+        width: 80%;
+    }
+
+    table, tr, td {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    td {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    tbody tr:nth-child(odd) td {
+        background-color: initial;
+    }
+}
