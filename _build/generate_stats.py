@@ -71,7 +71,16 @@ def miles_hiked_per_day(df):
     # Fix rounding issue by converting each mileage value into a string
     miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: '{:.1f}'.format(x))
 
-    return {'miles_per_day': miles_per_day['miles'].to_dict(), 'avg_mileage': avg_mileage}
+    # Fill in the missing days so we can calculate the number of zero days
+    num_zeros = 0
+    if len(completed) > 0:
+        zeros = miles_per_day.copy()
+        idx = pd.date_range(zeros.index.min(), zeros.index.max())
+        zeros.index = pd.DatetimeIndex(zeros.index)
+        zeros = zeros.reindex(idx, fill_value=0)
+        num_zeros = len(zeros[zeros['miles'] == 0])
+
+    return {'miles_per_day': miles_per_day['miles'].to_dict(), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
 
 
 def start_date(df):
