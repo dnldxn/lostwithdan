@@ -128,7 +128,7 @@ class TestMilesHikedPerDay(Test):
         bak = self.normal_df.copy()
 
         mpd = miles_hiked_per_day(self.normal_df)
-        expected = {'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8'}}
+        expected = {'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8'}, 'avg_mileage': '12.3'}
         self.assertDictEqual(expected, mpd)
 
         # make sure we didn't alter the original data
@@ -139,7 +139,7 @@ class TestMilesHikedPerDay(Test):
         bak = self.empty_df.copy()
 
         mpd = miles_hiked_per_day(self.empty_df)
-        expected = {'miles_per_day': {}}
+        expected = {'miles_per_day': {}, 'avg_mileage': '0.0'}
         self.assertDictEqual(expected, mpd)
 
         # make sure we didn't alter the original data
@@ -150,7 +150,10 @@ class TestMilesHikedPerDay(Test):
         bak = self.complete_df.copy()
 
         mpd = miles_hiked_per_day(self.complete_df)
-        expected = {'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8', "2017-03-15": '9.3', "2017-08-25": '5.2'}}
+        expected = {
+            'miles_per_day': {"2017-03-08": '8.8', "2017-03-09": '15.8', "2017-03-15": '9.3', "2017-08-25": '5.2'},
+            'avg_mileage': '9.8'
+        }
         self.assertDictEqual(expected, mpd)
 
         # make sure we didn't alter the original data

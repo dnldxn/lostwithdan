@@ -56,17 +56,22 @@ def miles_hiked_per_day(df):
     completed['dt_reached_shifted'] = completed[constants.DATE_COL].shift(1)
 
     # Exclude calculating the overnight duration by filtering where the dates are different
-    completed = completed[completed['dt_reached'] == completed['dt_reached_shifted']]
+    completed = completed[completed[constants.DATE_COL] == completed['dt_reached_shifted']]
 
     # Group by day
     f = {constants.TO_SPRINGER_COL: 'last', 'to_spgr_shifted': 'first'}
     miles_per_day = completed.groupby(constants.DATE_COL).agg(f)
     miles_per_day['miles'] = miles_per_day.to_spgr - miles_per_day.to_spgr_shifted
 
-    # Fix rounding issue by converting each mileage value into a string
-    miles_per_day = miles_per_day['miles'].apply(lambda x: '{:.1f}'.format(x))
+    # Calculate Average Miles per Day (does not include zero days)
+    avg_mileage = "0.0"
+    if len(completed) > 0:
+        avg_mileage = "{:.1f}".format(miles_per_day['miles'].mean())
 
-    return {'miles_per_day': miles_per_day.to_dict()}
+    # Fix rounding issue by converting each mileage value into a string
+    miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: '{:.1f}'.format(x))
+
+    return {'miles_per_day': miles_per_day['miles'].to_dict(), 'avg_mileage': avg_mileage}
 
 
 def start_date(df):
@@ -83,6 +88,7 @@ def start_date(df):
 
 def days_on_trail(df):
     days = 0
+    zero_days = 0
 
     completed = constants.get_completed(df)[constants.DATE_COL]
 
