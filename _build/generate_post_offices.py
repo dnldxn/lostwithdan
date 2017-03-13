@@ -4,7 +4,7 @@ import json
 from googleplaces import GooglePlaces, types
 
 
-def get_post_offices(df, num_future_checkpoints = 25, search_radius=20000):
+def get_post_offices(df, num_future_checkpoints = 25, search_radius=10000):
     # Get all unhiked poi's
     upcoming = df[pd.isnull(df[constants.DATE_COL])]
     upcoming.reset_index(inplace=True, drop=True)
