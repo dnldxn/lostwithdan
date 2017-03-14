@@ -4,7 +4,7 @@ import json
 from googleplaces import GooglePlaces, types
 
 
-def get_post_offices(df, num_future_checkpoints = 25, search_radius=10000):
+def get_post_offices(df, num_future_checkpoints = 27, search_radius=18000):
     # Get all unhiked poi's
     upcoming = df[pd.isnull(df[constants.DATE_COL])]
     upcoming.reset_index(inplace=True, drop=True)
@@ -42,6 +42,13 @@ def get_post_offices(df, num_future_checkpoints = 25, search_radius=10000):
         results = google_places.nearby_search(lat_lng=location, radius=search_radius, types=[types.TYPE_POST_OFFICE])
         query_results.extend(results.places)
 
+    # If available, jump back eight spots from the future checkpoint and query there as well
+    if num_future_checkpoints - 8 in available_indices:
+        upcoming_poi = upcoming.iloc[num_future_checkpoints-8]
+        location = {'lat': upcoming_poi.lat, 'lng': upcoming_poi.lon}
+        results = google_places.nearby_search(lat_lng=location, radius=search_radius, types=[types.TYPE_POST_OFFICE])
+        query_results.extend(results.places)
+
     # Loop through all the results and extracting and formatting the important info
     post_offices = []
     for place in query_results:
@@ -57,9 +64,14 @@ def get_post_offices(df, num_future_checkpoints = 25, search_radius=10000):
 
         post_offices.append(po)
 
-    unique_post_offices = [dict(p) for p in set(tuple(i.items()) for i in post_offices)]
+    # Remove the duplicates by using the address
+    unique_post_offices = {}
+    for po in post_offices:
+        if po['addr'] != 'United States Postal Service':
+            unique_post_offices.setdefault(po['addr'], po)
 
-    return unique_post_offices
+    return list(unique_post_offices.values())
+
 
 if __name__ == "__main__":
     checkpoints = constants.read_poi_file()
