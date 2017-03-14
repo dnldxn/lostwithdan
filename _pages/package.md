@@ -12,6 +12,8 @@ Want to send me a care package?  Great!  Just please keep these considerations i
 
 Use [the map](/map) to find a [USPS post office](https://tools.usps.com/go/POLocatorAction!input.action) or business along my route.  Post offices are preferred, however most businesses that cater to hikers (outfitters, outdoor stores, hotels, etc) will hold mail for a thru hiker.  It's best to call first!
 
+[This site](http://www.soruck.net/at/) also seems to be a good resource.
+
 You will not able to send **UPS or FedEx packages** to a USPS post office!  You will need to find a hiker friendly business to ship UPS or FedEx packages.
 
 ## 2. Address the package as follows
