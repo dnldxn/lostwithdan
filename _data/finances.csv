@@ -1,2 +1,12 @@
-category,date,amount
-food,2017-03-12,99.63
+category,date,amount,comment
+food,2017-03-12,99.63,initial purchase at Publix
+food,2017-03-18,17.27,purchase at Neel Gap
+gear,2017-03-18,69.83,replacement Buff and hat at Neel Gap
+lodging,2017-03-18,18.00,bunk at Neel Gap hostel
+lodging,2017-03-20,134.54,Holiday Inn Express in Hiwassee
+restaurant,2017-03-20,11.00,Daniels Steakhouse in Hiwassee
+alcohol,2017-03-20,7.55,Beer at Hiwassee beer store
+food,2017-03-20,23.09,food resupply at Hiwassee Dollar Store
+gear,2017-03-20,3.08,replacement lighter at Hiwassee Dollar Store
+gear,2017-03-21,13.59,Neosporin and sports tape at Rite Aid in Hiwassee
+food,2017-03-21,5.18,instant breakfast packs at Ingles in Hiwassee
