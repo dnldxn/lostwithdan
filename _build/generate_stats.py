@@ -193,14 +193,14 @@ def predict_completion(df):
     stacker.fit(training[estimator_prediction_cols], y_train)
     predictions = stacker.predict(predict[estimator_prediction_cols])
 
-    # Sum the predictions for all the remaining segments.  notice we add a 10% buffer to the estimate.
+    # Sum the predictions for all the remaining segments.  notice we add a 15% buffer to the estimate.
     # Also this assumes 7.5 hours of hiking per day
     predicted_time_to_finish_sec = predictions.sum()
-    predicted_time_to_finish_days = predicted_time_to_finish_sec * 1.1 / 60 / 60 / 7.5
+    predicted_time_to_finish_days = predicted_time_to_finish_sec * 1.15 / 60 / 60 / 7.5
 
     # Average the predicted finish and estimated finish.  This ensures the prediction doesn't get too crazy,
     # especially in the first few weeks when there is little training data.
-    predicted_finish = checkpoints.ix[0, constants.DATE_COL] + timedelta(days=predicted_time_to_finish_days)
+    predicted_finish = training.ix[-1, constants.DATE_COL] + timedelta(days=predicted_time_to_finish_days)
     estimated_finish = datetime.strptime(constants.ESTIMATED_FINISH_DT , '%Y-%m-%d')
 
     final_estimate = min(estimated_finish, predicted_finish) + abs(estimated_finish - predicted_finish)/2
