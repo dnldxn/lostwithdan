@@ -1,12 +1,15 @@
-category,date,amount,comment
-food,2017-03-12,99.63,initial purchase at Publix
-food,2017-03-18,17.27,purchase at Neel Gap
-gear,2017-03-18,69.83,replacement Buff and hat at Neel Gap
-lodging,2017-03-18,18.00,bunk at Neel Gap hostel
-lodging,2017-03-20,134.54,Holiday Inn Express in Hiwassee
-restaurant,2017-03-20,11.00,Daniels Steakhouse in Hiwassee
-alcohol,2017-03-20,7.55,Beer at Hiwassee beer store
-food,2017-03-20,23.09,food resupply at Hiwassee Dollar Store
-gear,2017-03-20,3.08,replacement lighter at Hiwassee Dollar Store
-gear,2017-03-21,13.59,Neosporin and sports tape at Rite Aid in Hiwassee
-food,2017-03-21,5.18,instant breakfast packs at Ingles in Hiwassee
+category,date,amount,comment,location
+food,2017-03-12,99.63,initial purchase at Publix,
+food,2017-03-18,17.27,purchase at Neel Gap,Neel Gap
+gear,2017-03-18,69.83,replacement Buff and hat,Neel Gap
+lodging,2017-03-18,18,bunk at Neel Gap hostel,Neel Gap
+lodging,2017-03-20,134.54,Holiday Inn Express,Hiwassee
+restaurant,2017-03-20,11,Daniels Steakhouse,Hiwassee
+alcohol,2017-03-20,7.55,Beers at Bacchus beer store,Hiwassee
+food,2017-03-20,23.09,food resupply at Dollar Store,Hiwassee
+gear,2017-03-20,3.08,replacement lighter at Dollar Store,Hiwassee
+gear,2017-03-21,13.59,Neosporin and sports tape at Rite Aid,Hiwassee
+food,2017-03-21,5.18,instant breakfast packs at Ingles,Hiwassee
+food,2017-03-26,20.45,food resupply at Walmart,Franklin
+alcohol,2017-03-26,12,beers at Lazy Hiker,Franklin
+restaurant,2017-03-26,11.73,food at Asian King,Franklin
