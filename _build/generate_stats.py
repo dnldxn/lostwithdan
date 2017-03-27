@@ -132,7 +132,7 @@ def predict_completion(df):
     # Use rows that have completed dates to train the model, use the rest for prediction
     # Notice we exclude calculating the overnight duration by filtering out where the dates are different
     training = shifted[shifted['dt_reached_dt'] == shifted['dt_reached_dt_shifted']]
-    training = training[['elev_diff', 'mileage', 'time_diff']]
+    training = training[['elev_diff', 'mileage', 'time_diff', constants.DATE_COL]]
     predict = shifted[pd.isnull(shifted[constants.DATE_COL])][['elev_diff', 'mileage']]
 
     # If not enough training data, output the manually estimated finish date
