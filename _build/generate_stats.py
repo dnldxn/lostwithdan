@@ -200,6 +200,7 @@ def predict_completion(df):
 
     # Average the predicted finish and estimated finish.  This ensures the prediction doesn't get too crazy,
     # especially in the first few weeks when there is little training data.
+    print(training[constants.DATE_COL].iloc[-1])
     predicted_finish = training[constants.DATE_COL].iloc[-1] + timedelta(days=predicted_time_to_finish_days)
     estimated_finish = datetime.strptime(constants.ESTIMATED_FINISH_DT , '%Y-%m-%d')
 
