@@ -38,13 +38,12 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
         <div id="finance_bars"></div>
     </div>
     
+    <div class="statsHeader">Mileage Log</div>
     <div class="statsBox">
     	<table>
-    	<tr><th>Date</th></tr>
-        <tr><th>Miles</th></tr>
+    	<tr><th>Date</th><th>Miles</th></tr>
     	{% for day in site.data.stats.miles_per_day %}
-    	<tr><td>{{ day[0] }}</td></tr>
-        <tr><td>{{ day[1] }}</td></tr>
+    	<tr><td>{{ day[0] }}</td><td>{{ day[1] }}</td></tr>
         {% endfor %}
         </table>
     </div>
