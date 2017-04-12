@@ -1,3 +1,5 @@
+git clone https://dnldxn@gitlab.com/dnldxn/dnldxn.gitlab.io.git
+
 # Run on C9
 
 ```bash
@@ -51,7 +53,10 @@ docker run --name anaconda -it -p 8888:8888 ^
 continuumio/anaconda3 ^
 /bin/bash
 
+docker run --name anaconda -it -p 8888:8888 -v `pwd`:/opt/notebooks continuumio/anaconda3 /bin/bash
+
 conda install jupyter tensorflow keras scikit-learn pandas numpy spacy seaborn -y
+conda install jupyter scikit-learn pandas numpy -y
 
 /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8888 --no-browser
 ```
