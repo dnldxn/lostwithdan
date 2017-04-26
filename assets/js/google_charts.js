@@ -13,8 +13,8 @@ function drawChart() {
     data.addColumn('date', '');
     data.addColumn('number', 'Miles');
     data.addRows([
-        {% for day in site.data.stats.miles_per_day %}
-            [ new Date('{{ day[0] }}'), {{ day[1] }}],
+        {% for day in site.data.stats.mileage %}
+            [ new Date('{{ day.date }}'), {{ day.miles }}],
         {% endfor %}
     ]);
     data.sort({column: 0, desc: false});

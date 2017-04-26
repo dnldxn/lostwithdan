@@ -40,10 +40,17 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
     
     <div class="statsHeader">Mileage Log</div>
     <div class="statsBox">
-    	<table>
-    	<tr><th>Date</th><th>Miles</th></tr>
-    	{% for day in site.data.stats.miles_per_day %}
-    	<tr><td>{{ day[0] }}</td><td>{{ day[1] }}</td></tr>
+        <table>
+        <tr><th>Date</th><th>Miles</th><th>Duration</th><th>Pace</th></tr>
+        {% for day in site.data.stats.mileage %}
+            {% assign hours = day.duration | divided_by: 60 | round: 0 %}
+            {% assign minutes = day.duration | modulo: 60 | round: 0 %}
+            {% if day.duration > 0 %}
+                {% assign mph = day.miles | divided_by: day.duration | times: 60 | round: 2 %}
+            {% else %}
+                {% assign mph = 0 | round: 2 %}
+            {% endif %}
+            <tr><td>{{ day.date }}</td><td>{{ day.miles }}</td><td>{{ hours }}h, {{ minutes }}m</td><td>{{ mph }} mph</td></tr>
         {% endfor %}
         </table>
     </div>

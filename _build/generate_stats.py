@@ -49,27 +49,39 @@ def current_location(df):
 
 def miles_hiked_per_day(df):
     completed = constants.get_completed(df)[[constants.DATE_COL, constants.TO_SPRINGER_COL]]
-    completed[constants.DATE_COL] = completed[constants.DATE_COL].dt.strftime('%Y-%m-%d')
+    completed[constants.DATE_COL+"_dt"] = completed[constants.DATE_COL].dt.strftime('%Y-%m-%d')
 
     # Need to shift the values, since the last checkpoint of each day should be the first checkpoint of the next day
-    completed['to_spgr_shifted'] = completed[constants.TO_SPRINGER_COL].shift(1)
-    completed['dt_reached_shifted'] = completed[constants.DATE_COL].shift(1)
+    completed[constants.TO_SPRINGER_COL + '_shifted'] = completed[constants.TO_SPRINGER_COL].shift(1)
+    completed[constants.DATE_COL + '_shifted'] = completed[constants.DATE_COL].shift(1)
+    completed[constants.DATE_COL + '_dt_shifted'] = completed[constants.DATE_COL + '_dt'].shift(1)
 
     # Exclude calculating the overnight duration by filtering where the dates are different
-    completed = completed[completed[constants.DATE_COL] == completed['dt_reached_shifted']]
+    completed = completed[completed[constants.DATE_COL + '_dt'] == completed[constants.DATE_COL + '_dt_shifted']]
 
     # Group by day
-    f = {constants.TO_SPRINGER_COL: 'last', 'to_spgr_shifted': 'first'}
-    miles_per_day = completed.groupby(constants.DATE_COL).agg(f)
-    miles_per_day['miles'] = miles_per_day.to_spgr - miles_per_day.to_spgr_shifted
+    f = {constants.TO_SPRINGER_COL: 'last', 'to_spgr_shifted': 'first', constants.DATE_COL: 'last', constants.DATE_COL + '_shifted': 'first'}
+    miles_per_day = completed.groupby(constants.DATE_COL+'_dt').agg(f)
+    miles_per_day['miles'] = miles_per_day[constants.TO_SPRINGER_COL] - miles_per_day[constants.TO_SPRINGER_COL + '_shifted']
+    miles_per_day['duration'] = miles_per_day[constants.DATE_COL] - miles_per_day[constants.DATE_COL + '_shifted']
 
     # Calculate Average Miles per Day (does not include zero days)
     avg_mileage = "0.0"
     if len(completed) > 0:
         avg_mileage = "{:.1f}".format(miles_per_day['miles'].mean())
 
+    # Fill missing dates with zero miles
+    miles_per_day.index = pd.DatetimeIndex(miles_per_day.index)
+    start = miles_per_day.index[0]
+    end = miles_per_day.index[-1]
+    idx = pd.date_range(start, end)
+    miles_per_day = miles_per_day.reindex(idx, fill_value=0)
+        
     # Fix rounding issue by converting each mileage value into a string
-    miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: '{:.1f}'.format(x))
+    miles_per_day['date'] = miles_per_day.index
+    miles_per_day['date'] = miles_per_day['date'].dt.strftime('%Y-%m-%d')
+    miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: float('{:.1f}'.format(x)))
+    miles_per_day['duration'] = miles_per_day['duration'].apply(lambda x: int('{:.0f}'.format(x.total_seconds() / 60)))
 
     # Fill in the missing days so we can calculate the number of zero days
     num_zeros = 0
@@ -80,7 +92,7 @@ def miles_hiked_per_day(df):
         zeros = zeros.reindex(idx, fill_value=0)
         num_zeros = len(zeros[zeros['miles'] == 0])
 
-    return {'miles_per_day': miles_per_day['miles'].to_dict(), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
+    return {'mileage': miles_per_day[['date', 'miles', 'duration']].to_dict('records'), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
 
 
 def start_date(df):
