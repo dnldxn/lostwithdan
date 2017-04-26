@@ -26,6 +26,8 @@ docker run --name jekyll -it --rm ^
 ruby:2.3 ^
 /bin/bash
 
+docker run --name jekyll -it --rm -v `pwd`:/src -p 4000:4000 ruby:2.3 /bin/bash
+
 cd src
 bundle install
 JEKYLL_ENV=production jekyll serve --watch --force_polling --incremental --host=0.0.0.0
@@ -38,6 +40,8 @@ docker run --name python --rm -it ^
 -v c:/Users/dnldx/OneDrive/workspace/dnldxn.gitlab.io:/src ^
 python:3.6 ^
 /bin/bash
+
+docker run --name python --rm -it -v `pwd`:/src python:3.6 /bin/bash
 
 cd src
 
