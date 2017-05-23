@@ -1,6 +1,7 @@
 import constants
 
 import pandas as pd
+import numpy as np
 import json
 from datetime import datetime
 from datetime import timedelta
@@ -76,12 +77,17 @@ def miles_hiked_per_day(df):
     end = miles_per_day.index[-1]
     idx = pd.date_range(start, end)
     miles_per_day = miles_per_day.reindex(idx, fill_value=0)
-        
+    
+    # Calculate rolling 2 week mean over miles per day
+    mean_excluding_zero = lambda x: x[np.nonzero(x)].mean()
+    miles_per_day['rolling'] = miles_per_day['miles'].rolling(14, min_periods=1).apply(mean_excluding_zero)
+    
     # Fix rounding issue by converting each mileage value into a string
     miles_per_day['date'] = miles_per_day.index
     miles_per_day['date'] = miles_per_day['date'].dt.strftime('%Y-%m-%d')
     miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: float('{:.1f}'.format(x)))
     miles_per_day['duration'] = miles_per_day['duration'].apply(lambda x: int('{:.0f}'.format(x.total_seconds() / 60)))
+    miles_per_day['rolling'] = miles_per_day['rolling'].apply(lambda x: float('{:.1f}'.format(x)))
 
     # Fill in the missing days so we can calculate the number of zero days
     num_zeros = 0
@@ -92,7 +98,7 @@ def miles_hiked_per_day(df):
         zeros = zeros.reindex(idx, fill_value=0)
         num_zeros = len(zeros[zeros['miles'] == 0])
 
-    return {'mileage': miles_per_day[['date', 'miles', 'duration']].to_dict('records'), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
+    return {'mileage': miles_per_day[['date', 'miles', 'duration', 'rolling']].to_dict('records'), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
 
 
 def start_date(df):
@@ -154,9 +160,9 @@ def predict_completion(df):
         return {'estimated_completion': {'date': formatted_dt}}
 
     # Extract features and labels
-    X_train = training.ix[:,0:2]
-    y_train = training.ix[:,2].map(lambda x: x.total_seconds())
-    X_predict = predict.ix[:, 0:2]
+    X_train = training[['elev_diff', 'mileage']]
+    y_train = training['time_diff'].map(lambda x: x.total_seconds())
+    X_predict = predict[['elev_diff', 'mileage']]
 
     # Generate polynomial features (x1, x2, x1*x2, x1^2, x2^2)
     poly = PolynomialFeatures(2)

@@ -19,7 +19,7 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
         <table>
             <tr><td>Walked</td><td>{{ hiked }} miles</td></tr>
             <tr><td>Remaining</td><td>{{ remaining }} miles</td></tr>
-            <tr><td>Complete</td><td>{{ percent_complete | round: 2 }}%</td></tr>
+            <tr><td>Complete</td><td>{{ percent_complete | round: 1 }}%</td></tr>
         </table>
     </div>
 
@@ -40,8 +40,18 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
     
     <div class="statsHeader">Mileage Log</div>
     <div class="statsBox">
-        <table>
-        <tr><th>Date</th><th>Miles</th><th>Duration</th><th>Pace</th></tr>
+        <table id="dailyTable">
+          
+        <tr>
+          <th>Date</th>
+          <th>Miles</th>
+          <th>
+            <span tooltip="2 week rolling average (excludes zeros)">Rolling Avg</span>
+          </th>
+          <th>Duration</th>
+          <th>Pace</th>
+        </tr>
+          
         {% for day in site.data.stats.mileage %}
             {% assign hours = day.duration | divided_by: 60 | round: 0 %}
             {% assign minutes = day.duration | modulo: 60 | round: 0 %}
@@ -50,7 +60,13 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
             {% else %}
                 {% assign mph = 0 | round: 2 %}
             {% endif %}
-            <tr><td>{{ day.date }}</td><td>{{ day.miles }}</td><td>{{ hours }}h, {{ minutes }}m</td><td>{{ mph }} mph</td></tr>
+            <tr>
+              <td>{{ day.date }}</td>
+              <td>{{ day.miles }}</td>
+              <td>{{ day.rolling }}</td>
+              <td>{{ hours }}h, {{ minutes }}m</td>
+              <td>{{ mph }} mph</td>
+          </tr>
         {% endfor %}
         </table>
     </div>
