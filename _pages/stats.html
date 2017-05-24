@@ -46,10 +46,13 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
           <th>Date</th>
           <th>Miles</th>
           <th>
-            <span tooltip="2 week rolling average (excludes zeros)">Rolling Avg</span>
+            <span tooltip="2 week rolling average (excludes zeros)">2 Wk Avg</span>
           </th>
           <th>Duration</th>
           <th>Pace</th>
+          <th>
+            <span tooltip="To finish by Aug 27.  Zero every 10 days.">Need to Avg</span>
+          </th>
         </tr>
           
         {% for day in site.data.stats.mileage %}
@@ -66,6 +69,7 @@ Sorry, I ran out of time to make this page pretty.  But it contains useful infor
               <td>{{ day.rolling }}</td>
               <td>{{ hours }}h, {{ minutes }}m</td>
               <td>{{ mph }} mph</td>
+              <td>{{ day.need_to_avg }}</td>
           </tr>
         {% endfor %}
         </table>

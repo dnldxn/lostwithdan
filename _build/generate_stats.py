@@ -76,11 +76,21 @@ def miles_hiked_per_day(df):
     start = miles_per_day.index[0]
     end = miles_per_day.index[-1]
     idx = pd.date_range(start, end)
-    miles_per_day = miles_per_day.reindex(idx, fill_value=0)
+    miles_per_day = miles_per_day.reindex(idx, fill_value=None)
+    miles_per_day['miles'] = miles_per_day['miles'].fillna(0.0)
+    miles_per_day['duration'] = miles_per_day['duration'].fillna(0.0)
+    miles_per_day['to_spgr'] = miles_per_day['to_spgr'].fillna(method='ffill')
     
     # Calculate rolling 2 week mean over miles per day
     mean_excluding_zero = lambda x: x[np.nonzero(x)].mean()
     miles_per_day['rolling'] = miles_per_day['miles'].rolling(14, min_periods=1).apply(mean_excluding_zero)
+    
+    # Calculate how many miles I need to average to finish on time.  This assumes I take a zero every 10 days (* 0.9)
+    estimated_finish = datetime.strptime(constants.ESTIMATED_FINISH_DT , '%Y-%m-%d')
+    
+    miles_per_day['days_to_finish'] = (estimated_finish - miles_per_day.index).total_seconds() * 0.9 / (24 * 60 * 60)
+    miles_per_day['miles_remaining'] = df[constants.TO_SPRINGER_COL].iloc[-1] - miles_per_day['to_spgr']
+    miles_per_day['need_to_avg'] = miles_per_day['miles_remaining'] / miles_per_day['days_to_finish']
     
     # Fix rounding issue by converting each mileage value into a string
     miles_per_day['date'] = miles_per_day.index
@@ -88,6 +98,7 @@ def miles_hiked_per_day(df):
     miles_per_day['miles'] = miles_per_day['miles'].apply(lambda x: float('{:.1f}'.format(x)))
     miles_per_day['duration'] = miles_per_day['duration'].apply(lambda x: int('{:.0f}'.format(x.total_seconds() / 60)))
     miles_per_day['rolling'] = miles_per_day['rolling'].apply(lambda x: float('{:.1f}'.format(x)))
+    miles_per_day['need_to_avg'] = miles_per_day['need_to_avg'].apply(lambda x: float('{:.1f}'.format(x)))
 
     # Fill in the missing days so we can calculate the number of zero days
     num_zeros = 0
@@ -98,7 +109,7 @@ def miles_hiked_per_day(df):
         zeros = zeros.reindex(idx, fill_value=0)
         num_zeros = len(zeros[zeros['miles'] == 0])
 
-    return {'mileage': miles_per_day[['date', 'miles', 'duration', 'rolling']].to_dict('records'), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
+    return {'mileage': miles_per_day[['date', 'miles', 'duration', 'rolling', 'need_to_avg']].to_dict('records'), 'avg_mileage': avg_mileage, 'num_zeros': num_zeros}
 
 
 def start_date(df):
