@@ -5,11 +5,9 @@ prepare:
   - pip install -r _build/requirements.txt
   - python _build/generate_stats.py
   - python _build/generate_map_img.py
-  - python _build/generate_post_offices.py
   artifacts:
     paths:
     - _data/stats.json
-    - _data/post_offices.json
     - assets/images/googlemap.png
 
 pages:

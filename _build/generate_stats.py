@@ -151,7 +151,7 @@ def predict_completion(df):
     shifted['dt_reached_dt_shifted'] = shifted['dt_reached_dt'].shift(1)
 
     # Remove the first row, since there is no diff between the first row and before it
-    shifted = shifted.ix[1:]
+    shifted = shifted.iloc[1:]
 
     # Compute the diffs
     shifted['elev_diff'] = shifted[constants.ELEV_COL] - shifted['elev_shifted']

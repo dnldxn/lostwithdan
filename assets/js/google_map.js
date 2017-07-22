@@ -81,29 +81,6 @@ function initMap() {
         animation: google.maps.Animation.DROP
     });
 
-    /* Add the list of Post Offices (if any) that have been identified by the build process */
-    infowindow = new google.maps.InfoWindow();
-    var post_offices = {{ site.data.post_offices | jsonify }}
-    
-    for (var i = 0; i < post_offices.length; i++) {
-        var po = post_offices[i]
-
-        var marker = new google.maps.Marker({
-            map: map,
-            position: {lat: parseFloat(po.lat), lng: parseFloat(po.lng)},
-            icon: {
-                url: 'https://maps.gstatic.com/mapfiles/place_api/icons/post_office-71.png',
-                scaledSize: new google.maps.Size(20, 20)
-            },
-            content: "<b><a href='" + po.url + "' target='_blank'>" + po.nm + "</a></b><br />" + po.addr + "<br />" + po.phone
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-            infowindow.setContent(this.content);
-            infowindow.open(map, this);
-        });
-    }
-
     /* Add button to reset the view to my current location */
     var resetLocationButton = document.getElementById('resetLocationButton')
     resetLocationButton.addEventListener('click', function() {
