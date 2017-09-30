@@ -139,16 +139,13 @@ def days_on_trail(df):
 
 
 def predict_completion(df):
-    df = df[df[constants.TYPE_COL].isin(['FEATURE', 'SHELTER', 'HUT'])]
     df = df[[constants.TO_SPRINGER_COL, constants.ELEV_COL, constants.DATE_COL]]
-    df['dt_reached_dt'] = df['dt_reached'].dt.date
 
     # Make a working copy of the data, and shift the rows so diffs between rows can be computed
     shifted = df.copy()
     shifted['to_spgr_shifted'] = shifted[constants.TO_SPRINGER_COL].shift(1)
     shifted['elev_shifted'] = shifted[constants.ELEV_COL].shift(1)
     shifted['dt_reached_shifted'] = shifted[constants.DATE_COL].shift(1)
-    shifted['dt_reached_dt_shifted'] = shifted['dt_reached_dt'].shift(1)
 
     # Remove the first row, since there is no diff between the first row and before it
     shifted = shifted.iloc[1:]
@@ -160,12 +157,12 @@ def predict_completion(df):
 
     # Use rows that have completed dates to train the model, use the rest for prediction
     # Notice we exclude calculating the overnight duration by filtering out where the dates are different
-    training = shifted[shifted['dt_reached_dt'] == shifted['dt_reached_dt_shifted']]
+    training = shifted[shifted['dt_reached'].dt.date == shifted['dt_reached_shifted'].dt.date]
     training = training[['elev_diff', 'mileage', 'time_diff', constants.DATE_COL]]
     predict = shifted[pd.isnull(shifted[constants.DATE_COL])][['elev_diff', 'mileage']]
 
-    # If not enough training data, output the manually estimated finish date
-    if len(training) < 6:
+    # If not enough training data or nothing to predict, output the manually estimated finish date
+    if len(training) < 6 or len(predict) < 1:
         estimated = datetime.strptime(constants.ESTIMATED_FINISH_DT, '%Y-%m-%d')
         formatted_dt = "{d:%b} {d.day}, {d.year}".format(d=estimated)
         return {'estimated_completion': {'date': formatted_dt}}
